@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+		<heroes>
+		<hero id="1">
+			<name><![CDATA[Arthur]]></name>
+			<level>5</level>
+			<heroType id="1"/>
+			<spells>
+				<spell id="1"/>
+				<spell id="3"/>
+			</spells>
+		</hero>
+		<hero id="2">
+			<name><![CDATA[Kharn]]></name>
+			<level>3</level>
+			<heroType id="2"/>
+			<spells>
+				<spell id="3"/>
+				<spell id="4"/>
+			</spells>
+		</hero>
+		<hero id="3">
+			<name><![CDATA[Tatiyana]]></name>
+			<level>10</level>
+			<heroType id="3"/>
+			<spells>
+				<spell id="2"/>
+				<spell id="5"/>
+			</spells>
+		</hero>
+	</heroes>
+	<heroTypes>
+		<heroType id="1"><![CDATA[Paladin]]></heroType>
+		<heroType id="2"><![CDATA[Barbarian]]></heroType>
+		<heroType id="3"><![CDATA[Assassin]]></heroType>
+	</heroTypes>
+	
+	
+	
+	
+	<spells>
+		<spell id="1">
+			<name><![CDATA[Heal]]></name>
+			<manacost>10</manacost>
+			<targetAttributes>
+				<targetAttribute id="1"/>
+			</targetAttributes>
+			<effect>30</effect>
+		</spell>
+		<spell id="2">
+			<name><![CDATA[Charge]]></name>
+			<manacost>20</manacost>
+			<targetAttributes>
+				<targetAttribute id="4"/>
+			</targetAttributes>
+			<effect>50</effect>
+		</spell>
+		<spell id="3">
+			<name><![CDATA[Fortify]]></name>
+			<manacost>25</manacost>
+			<targetAttributes>
+				<targetAttribute id="2"/>
+			</targetAttributes>
+			<effect>50</effect>
+		</spell>
+		<spell id="4">
+			<name><![CDATA[God strength]]></name>
+			<manacost>40</manacost>
+			<targetAttributes>
+				<targetAttribute id="3"/>
+			</targetAttributes>
+			<effect>25</effect>
+		</spell>
+		<spell id="5">
+			<name><![CDATA[Rage]]></name>
+			<manacost>80</manacost>
+			<targetAttributes>
+				<targetAttribute id="2"/>
+				<targetAttribute id="3"/>
+				<targetAttribute id="4"/>
+			</targetAttributes>
+			<effect>35</effect>
+		</spell>
+	</spells>
+	<attributes>
+		<attribute id="1"><![CDATA[Life]]></attribute>
+		<attribute id="2"><![CDATA[Armor]]></attribute>
+		<attribute id="3"><![CDATA[Damage]]></attribute>
+		<attribute id="4"><![CDATA[Speed]]></attribute>
+	</attributes>
+</data>
