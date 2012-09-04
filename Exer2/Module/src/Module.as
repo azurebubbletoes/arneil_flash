@@ -8,6 +8,7 @@ package
 	 * @author arneil mercado
 	 */
 	public class Module extends Sprite 
+						implements Runner
 	{	
 		private var _runner:Sprite = new Sprite();
 		private var _goingRight:Boolean;
@@ -57,12 +58,12 @@ package
 			if (!_stop) 
 			{
 				if (_goingRight) {
-						_runner.x += 2;
+						_runner.x += 10;
 						
 						if( _runner.x +40 >= stage.stageWidth)
 							_goingRight = false;							
 				}else {	
-					_runner.x -= 2;
+					_runner.x -= 10;
 					if(_runner.x <= 0 	) 
 							_goingRight = true;
 					

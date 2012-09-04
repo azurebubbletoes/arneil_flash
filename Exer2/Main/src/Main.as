@@ -18,6 +18,11 @@ package
 		private var _externalSwf:Object;
 		private var _isLoaded:Boolean;
 		
+		private var _play:Sprite;
+		private var _load:Sprite;
+		private var _remove:Sprite;
+		private var _stop:Sprite;
+		
 		public function Main():void 
 		{
 			if (stage) init();
@@ -36,15 +41,15 @@ package
 			//load remove play stop
 			var y:int = 10;
 			_isLoaded = false;
-			createButton("Load", 50, y, load);
-			createButton("Play", 140, y, play);
-			createButton("Stop", 250, y, stop);
-			createButton("Remove", 350, y, remove);
+			_load=createButton("Load", 50, y, load);
+			_play=createButton("Play", 140, y, play);
+			_stop=createButton("Stop", 250, y, stop);
+			_remove=createButton("Remove", 350, y, remove);
 			
 			
 		}
 		
-		private function createButton(name:String, x:int, y:int, listener:Function):void 
+		protected function createButton(name:String, x:int, y:int, listener:Function):Sprite
 		{	
 			var button:Sprite = new Sprite();
 			
@@ -66,6 +71,7 @@ package
 			txt.y = y + 30;
 		
 			addChild(txt);
+			return button;
 		}
 		
 		private function load(e:Event):void
@@ -83,21 +89,27 @@ package
 		private function play(e:Event):void
 		{
 			trace("play");
-			
-			_externalSwf.play();
+			if (_isLoaded) 
+			{
+				_externalSwf.play();
+			}
 
 		}
 		
 		private function stop(e:Event):void
 		{
 			trace("stop");
-			_externalSwf.stop();
+			if (_isLoaded) 
+			{
+				_externalSwf.stop();
+			}
 		}
 		
 		private function remove(e:Event):void
 		{	
 			//_externalSwf.removeChild();
-			if (_isLoaded) {
+			if (_isLoaded) 
+			{
 				_externalSwf.stop();
 				removeChild(_myLoader);
 				_isLoaded = false;
