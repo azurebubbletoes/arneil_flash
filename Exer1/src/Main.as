@@ -23,6 +23,7 @@ package
 		private var style:StyleSheet= new StyleSheet();
 		private var guivariables: Array = [];
 		
+		
 		public function Main():void
 		{	
 			
