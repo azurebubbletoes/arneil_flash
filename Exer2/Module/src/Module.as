@@ -66,10 +66,7 @@ package
 					_runner.x -= 10;
 					if(_runner.x <= 0 	) 
 							_goingRight = true;
-					
-						
-													
-													
+											
 				}
 			}
 		}

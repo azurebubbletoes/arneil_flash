@@ -23,6 +23,11 @@ package
 		private var _remove:Sprite;
 		private var _stop:Sprite;
 		
+		private var _txtPlay:TextField;
+		private var _txtLoad:TextField;
+		private var _txtRemove:TextField;
+		private var _txtStop:TextField;
+		
 		public function Main():void 
 		{
 			if (stage) init();
@@ -41,15 +46,30 @@ package
 			//load remove play stop
 			var y:int = 10;
 			_isLoaded = false;
-			_load=createButton("Load", 50, y, load);
-			_play=createButton("Play", 140, y, play);
-			_stop=createButton("Stop", 250, y, stop);
-			_remove=createButton("Remove", 350, y, remove);
 			
+			_load=createButton(50, y, load);
+			_play=createButton(140, y, play);
+			_stop=createButton(250, y, stop);
+			_remove=createButton(350, y, remove);
 			
+			_txtLoad=createTextField("Load",50, y);
+			_txtPlay=createTextField("Play", 140, y);
+			_txtStop=createTextField("Stop", 250, y);
+			_txtRemove =createTextField("Remove", 350, y);
+		
+			addChild(_load);
+			addChild(_play);
+			addChild(_stop);
+			addChild(_remove);
+			
+			//labels
+			addChild(_txtLoad);
+			addChild(_txtPlay);
+			addChild(_txtStop);
+			addChild(_txtRemove);
 		}
 		
-		protected function createButton(name:String, x:int, y:int, listener:Function):Sprite
+		protected function createButton(x:int, y:int, listener:Function):Sprite
 		{	
 			var button:Sprite = new Sprite();
 			
@@ -61,17 +81,17 @@ package
 			button.buttonMode = true;
 			button.mouseChildren = false;
 			button.addEventListener(MouseEvent.CLICK, listener);
-			
-			addChild(button);
-			
-			
+
+			return button;
+		}
+		
+		private function createTextField(name:String,x:int, y:int):TextField
+		{
 			var txt:TextField = new TextField;
 			txt.text = name;
 			txt.x = x+20;
 			txt.y = y + 30;
-		
-			addChild(txt);
-			return button;
+			return txt;
 		}
 		
 		private function load(e:Event):void
