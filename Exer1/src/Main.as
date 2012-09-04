@@ -166,7 +166,9 @@ package
 				Display(xml,id);
 				
 				
-		   }else{
+		   }else {
+		
+			   
 			   txtError.border = true;
 			   txtError.borderColor = 0xff0000; //red
 		
@@ -176,6 +178,8 @@ package
 		  } catch ( e:TypeError ) {
 			trace( "Could not parse text into XML" );
 			trace( e.message );
+			
+			txtError.text = "ERROR. ID not found.";
 			_bErrorMsg = true;
 			  txtError.border = true;
 			txtError.borderColor = 0xff0000; //red
