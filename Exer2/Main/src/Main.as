@@ -85,7 +85,7 @@ package
 			return button;
 		}
 		
-		private function createTextField(name:String,x:int, y:int):TextField
+		protected function createTextField(name:String,x:int, y:int):TextField
 		{
 			var txt:TextField = new TextField;
 			txt.text = name;
