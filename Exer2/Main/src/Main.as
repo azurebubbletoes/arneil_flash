@@ -16,11 +16,16 @@ package
 	 * @author arneil mercado
 	 */
 	public class Main extends Sprite 
-	{
+	{	
+		private const LOAD:String = "load";
+		private const STOP:String = "stop";
+		private const REMOVE:String= "remove";
 
 		private var _myLoader:Loader;
 		
 		private var _externalSwf:IRunner;
+	//	private var _externalModule:Module;
+		
 		private var _isLoaded:Boolean;
 		private var _x:int;
 		private var _y:int;
@@ -45,6 +50,9 @@ package
 		private function init(e:Event = null):void 
 		{	
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+			addEventListener(LOAD, Loaded, false, 0, true);
+			
+			
 			// entry point
 			
 			initialize();
@@ -169,8 +177,7 @@ package
 				_myLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, getContent, false, 0, true);
 				_myLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, errorHandler, false, 0, true);
 				
-				
-				
+				dispatchEvent(new Event(LOAD));
 			}
 		}
 		
@@ -190,6 +197,7 @@ package
 			trace("stop");
 			if (_isLoaded) 
 			{	
+				dispatchEvent(new Event(STOP));
 				_externalSwf.stop();
 			}
 		}
@@ -198,13 +206,12 @@ package
 		{	
 			if (_isLoaded) 
 			{	
-				
-				removeEventListener(Event.ENTER_FRAME, objectState);
 				_externalSwf.stop();
 				_externalSwf.destroy();
 				removeChild(_externalSwf as DisplayObject);
+				dispatchEvent(new Event(REMOVE));
 				_isLoaded = false;
-				_txtStatus.text="Unloaded"
+				
 				
 			}
 		}
@@ -214,7 +221,9 @@ package
 			_externalSwf = e.target.content as IRunner;
 			_isLoaded = true;
 			addChild(_externalSwf as DisplayObject);
-			addEventListener(Event.ENTER_FRAME, objectState, false, 0, true);
+			
+			addEventListener(STOP, Stopped, false, 0, true);
+			addEventListener(REMOVE, Removed, false, 0, true);
 			_myLoader = null;
 
 		}
@@ -224,11 +233,28 @@ package
 			trace("ERROR.File not found.");
 		}
 		
-		private function objectState(e:Event):void
+		
+		private function Loaded(e:Event):void
 		{
-			if(_isLoaded)
-				_txtStatus.text = _externalSwf.status();
+			_txtStatus.text = "Loaded";
 		}
+		
+		private function Stopped(e:Event):void
+		{
+			_txtStatus.text = "Stopped";
+		}
+		
+		private function Removed(e:Event):void
+		{
+			_txtStatus.text = "Removed";
+		}
+		
+		private function Played(e:Event):void
+		{
+			_txtStatus.text = "Removed";
+		}
+		
+		
 		
 	}
 	
