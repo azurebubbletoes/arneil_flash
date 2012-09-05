@@ -13,8 +13,6 @@ package
 		private var _runner:Sprite;
 		private var _goingRight:Boolean;
 		private var _stop:Boolean;
-		private var _x:int;
-		private var _y:int;
 		private var _status:String;
 		
 		public function Module():void
@@ -38,27 +36,32 @@ package
 			_goingRight = false;
 			_status = "Stopped";
 			_stop = true;
+			
+			createChildren();
 			draw();
+			
+			stage.addEventListener(Event.ENTER_FRAME, run, false, 0, true);
+		}
+		
+		private function createChildren():void 
+		{
 			_runner=createRunner();
 			addChild(_runner);
-			stage.addEventListener(Event.ENTER_FRAME, run, false, 0, true);
 		}
 		
 		public function draw():void
 		{
-			_x = 0;
-			_y = 100;
-			// TODO: Move to initialize _runner = createRunner();
+			_runner.x = 0;
+			_runner.y = 100;
 		}
-		// TODO: Rename to createRunner
+
 		protected function createRunner():Sprite
 		{	
 			
 			var runner:Sprite = new Sprite();
 			runner.graphics.beginFill(0xFF0000);
 			runner.graphics.drawRect(0, 0, 40, 40);
-			runner.x = _x;
-			runner.y = _y;
+			
 			runner.graphics.endFill();
 			runner.buttonMode = false;
 			return runner;
