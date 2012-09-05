@@ -17,6 +17,8 @@ package
 		private var _myLoader:Loader = new Loader();                     
 		private var _externalSwf:Object;
 		private var _isLoaded:Boolean;
+		private var _x:int;
+		private var _y:int;
 		
 		private var _play:Sprite;
 		private var _load:Sprite;
@@ -44,19 +46,40 @@ package
 		private function initialize():void 
 		{
 			//load remove play stop
-			var y:int = 10;
+			 _y = 10;
+			 _x = 50;
 			_isLoaded = false;
 			
-			_load=createButton(50, y, load);
-			_play=createButton(140, y, play);
-			_stop=createButton(250, y, stop);
-			_remove=createButton(350, y, remove);
-			
-			_txtLoad=createTextField("Load",50, y);
-			_txtPlay=createTextField("Play", 140, y);
-			_txtStop=createTextField("Stop", 250, y);
-			_txtRemove =createTextField("Remove", 350, y);
+			addChildren();
 		
+		}
+		
+		private function addChildren():void
+		{
+			_load = createButton(load);
+			_load.x = _x;
+			_load.y = _y;
+			_txtLoad = createTextField("Load");
+			_x += 110;
+			
+			_play = createButton(play);
+			_play.x = _x;
+			_play.y = _y;
+			_txtPlay = createTextField("Play");
+			
+			_x += 110;
+			_stop = createButton(stop); 
+			_stop.x = _x;
+			_stop.y = _y;
+			_txtStop = createTextField("Stop");
+			
+			_x += 110;
+			_remove = createButton(remove);
+			_remove.x = _x;
+			_remove.y = _y;
+			_txtRemove =createTextField("Remove");
+			
+			
 			addChild(_load);
 			addChild(_play);
 			addChild(_stop);
@@ -69,14 +92,15 @@ package
 			addChild(_txtRemove);
 		}
 		
-		protected function createButton(x:int, y:int, listener:Function):Sprite
+	
+		
+		protected function createButton(listener:Function):Sprite
 		{	
 			var button:Sprite = new Sprite();
 			
 			button.graphics.beginFill(0xFFCC00);
-			button.graphics.drawRect(x, y, 70, 30);
+			button.graphics.drawRect(0, 0, 70, 30);
 			button.graphics.endFill();
-			
 			button.useHandCursor = true;
 			button.buttonMode = true;
 			button.mouseChildren = false;
@@ -85,12 +109,13 @@ package
 			return button;
 		}
 		
-		protected function createTextField(name:String,x:int, y:int):TextField
+		protected function createTextField(name:String):TextField
 		{
 			var txt:TextField = new TextField;
 			txt.text = name;
-			txt.x = x+20;
-			txt.y = y + 30;
+			txt.x = _x+20;
+			txt.y = _y + 30;
+	
 			return txt;
 		}
 		

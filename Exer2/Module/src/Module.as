@@ -8,7 +8,7 @@ package
 	 * @author arneil mercado
 	 */
 	public class Module extends Sprite 
-						implements Runner
+						implements IRunner
 	{	
 		private var _runner:Sprite = new Sprite();
 		private var _goingRight:Boolean;
@@ -38,14 +38,16 @@ package
 			_x = 0;
 			_y = 100;
 			_stop = true;
-			createSomething();
+			draw();
 		}
 		
-		private function createSomething():void
+		private function draw():void
 		{
 			
 			_runner.graphics.beginFill(0xFF0000);
-			_runner.graphics.drawRect(_x,_y,40,40);
+			_runner.graphics.drawRect(0, 0, 40, 40);
+			_runner.x = _x;
+			_runner.y = _y;
 			_runner.graphics.endFill();
 			_runner.buttonMode = false;
 			stage.addEventListener(Event.ENTER_FRAME, run);
