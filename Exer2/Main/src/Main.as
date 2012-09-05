@@ -1,5 +1,6 @@
 package 
 {
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -7,6 +8,8 @@ package
 	import flash.text.TextField;
 	import flash.net.URLRequest;
     import flash.display.Loader;
+	import flash.events.IOErrorEvent;
+
 	
 	/**
 	 * ...
@@ -14,10 +17,10 @@ package
 	 */
 	public class Main extends Sprite 
 	{
-		// TODO: Do not initialize the loader here. Move this inside load method.
-		private var _myLoader:Loader = new Loader();                     
-		// TODO: Change data type to IRunner
-		private var _externalSwf:Object;
+
+		private var _myLoader:Loader;
+		
+		private var _externalSwf:IRunner;
 		private var _isLoaded:Boolean;
 		private var _x:int;
 		private var _y:int;
@@ -48,39 +51,61 @@ package
 		
 		private function initialize():void 
 		{
-			// TODO: Move this inside draw()
-			 _y = 10;
-			 _x = 50;
 			_isLoaded = false;
-			
-			// TODO: Rename to createChildren()
-			addChildren();
-			// TODO: Midding draw() method
+			createChildren();
+			draw();
 		}
 		
-		private function addChildren():void
-		{
-			_load = createButton(load);
+		private function draw():void
+		{	
+			_y = 10;
+			_x = 50;
+			var y:int = _y + 30;
+			
 			_load.x = _x;
 			_load.y = _y;
-			_txtLoad = createTextField("Load");
-			_x += 110;
 			
-			_play = createButton(play);
+			_txtLoad.x = _x;
+			_txtLoad.y = y;
+			
+			_x += 110;
 			_play.x = _x;
 			_play.y = _y;
-			_txtPlay = createTextField("Play");
+			
+			_txtPlay.x = _x;
+			_txtPlay.y = y;
 			
 			_x += 110;
-			_stop = createButton(stop); 
+			_txtStop.x = _x;
+			_txtStop.y = y;
+			
 			_stop.x = _x;
 			_stop.y = _y;
-			_txtStop = createTextField("Stop");
 			
 			_x += 110;
-			_remove = createButton(remove);
+			_txtRemove.x = _x;
+			_txtRemove.y = y;
+			
 			_remove.x = _x;
 			_remove.y = _y;
+		}
+		
+		
+		private function createChildren():void
+		{
+			_load = createButton(load);
+			_txtLoad = createTextField("Load");
+
+			
+			_play = createButton(play);
+			_txtPlay = createTextField("Play");
+			
+			
+			_stop = createButton(stop); 
+			_txtStop = createTextField("Stop");
+			
+
+			_remove = createButton(remove);
 			_txtRemove =createTextField("Remove");
 			
 			
@@ -108,8 +133,7 @@ package
 			button.useHandCursor = true;
 			button.buttonMode = true;
 			button.mouseChildren = false;
-			// TODO: When adding listeners, always set weakReference=true (5th param)
-			button.addEventListener(MouseEvent.CLICK, listener);
+			button.addEventListener(MouseEvent.CLICK, listener,false,0,true);
 
 			return button;
 		}
@@ -118,9 +142,6 @@ package
 		{
 			var txt:TextField = new TextField;
 			txt.text = name;
-			// TODO: Move this inside draw()
-			txt.x = _x+20;
-			txt.y = _y + 30;
 	
 			return txt;
 		}
@@ -130,12 +151,14 @@ package
 			if (!_isLoaded)
 			{
 				trace("load");
+				_myLoader= new Loader()
 				var url:URLRequest = new URLRequest("Module.swf"); 
 				_myLoader.load(url);
-				_myLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, getContent);
-				// TODO: Always listen for IOErrorEvent.IO_ERROR if you're loading something, in case, it cannot find the file
-				// TODO: Do not add the loader to the display list. You'll only need the content (IRunner) and that's what you're going to add to the display list.
-				addChild(_myLoader);
+				_myLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, getContent, false, 0, true);
+				_myLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, errorHandler, false, 0, true);
+				
+				
+				
 			}
 		}
 		
@@ -160,22 +183,28 @@ package
 		
 		private function remove(e:Event):void
 		{	
-			//_externalSwf.removeChild();
 			if (_isLoaded) 
 			{
 				_externalSwf.stop();
-				removeChild(_myLoader);
+				_externalSwf.destroy();
+				removeChild(_externalSwf as DisplayObject);
 				_isLoaded = false;
 			}
 		}
 		
 		private function getContent(e:Event):void
 		{	
-			// TODO: Midding type cast to IRunner
-			_externalSwf = e.target.content;
+			_externalSwf = e.target.content as IRunner;
 			_isLoaded = true;
+			addChild(_externalSwf as DisplayObject);
 			
-			// TODO: Once you've acquired the loader content, do not forget to dispose the loader.
+			_myLoader = null;
+
+		}
+		
+		private function errorHandler(e:Event):void
+		{
+			trace("ERROR.File not found.");
 		}
 		
 	}

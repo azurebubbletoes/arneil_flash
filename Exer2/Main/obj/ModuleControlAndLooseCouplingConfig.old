@@ -21,6 +21,7 @@
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
       <path-element>C:\Users\Arneil John Mercado\Documents\GitHub\arneil_flash\Exer2\Main\src</path-element>
+      <path-element>C:\Users\Arneil John Mercado\Documents\GitHub\arneil_flash\Exer2\Module\src</path-element>
       <path-element>C:\Program Files\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
   </compiler>
