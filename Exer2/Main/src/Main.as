@@ -14,7 +14,9 @@ package
 	 */
 	public class Main extends Sprite 
 	{
+		// TODO: Do not initialize the loader here. Move this inside load method.
 		private var _myLoader:Loader = new Loader();                     
+		// TODO: Change data type to IRunner
 		private var _externalSwf:Object;
 		private var _isLoaded:Boolean;
 		private var _x:int;
@@ -38,20 +40,22 @@ package
 		
 		private function init(e:Event = null):void 
 		{	
-			initialize();
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			// entry point
+			
+			initialize();
 		}
 		
 		private function initialize():void 
 		{
-			//load remove play stop
+			// TODO: Move this inside draw()
 			 _y = 10;
 			 _x = 50;
 			_isLoaded = false;
 			
+			// TODO: Rename to createChildren()
 			addChildren();
-		
+			// TODO: Midding draw() method
 		}
 		
 		private function addChildren():void
@@ -104,6 +108,7 @@ package
 			button.useHandCursor = true;
 			button.buttonMode = true;
 			button.mouseChildren = false;
+			// TODO: When adding listeners, always set weakReference=true (5th param)
 			button.addEventListener(MouseEvent.CLICK, listener);
 
 			return button;
@@ -113,6 +118,7 @@ package
 		{
 			var txt:TextField = new TextField;
 			txt.text = name;
+			// TODO: Move this inside draw()
 			txt.x = _x+20;
 			txt.y = _y + 30;
 	
@@ -123,10 +129,13 @@ package
 		{
 			if (!_isLoaded)
 			{
+				// BUG: Your previous loader is not properly 
 				trace("load");
 				var url:URLRequest = new URLRequest("Module.swf"); 
 				_myLoader.load(url);
 				_myLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, getContent);
+				// TODO: Always listen for IOErrorEvent.IO_ERROR if you're loading something, in case, it cannot find the file
+				// TODO: Do not add the loader to the display list. You'll only need the content (IRunner) and that's what you're going to add to the display list.
 				addChild(_myLoader);
 			}
 		}
@@ -163,8 +172,11 @@ package
 		
 		private function getContent(e:Event):void
 		{	
+			// TODO: Midding type cast to IRunner
 			_externalSwf = e.target.content;
 			_isLoaded = true;
+			
+			// TODO: Once you've acquired the loader content, do not forget to dispose the loader.
 		}
 		
 	}
