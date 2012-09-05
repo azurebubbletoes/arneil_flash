@@ -129,7 +129,6 @@ package
 		{
 			if (!_isLoaded)
 			{
-				// BUG: Your previous loader is not properly 
 				trace("load");
 				var url:URLRequest = new URLRequest("Module.swf"); 
 				_myLoader.load(url);
