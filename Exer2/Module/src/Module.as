@@ -15,6 +15,7 @@ package
 		private var _stop:Boolean;
 		private var _x:int;
 		private var _y:int;
+		private var _status:String;
 		
 		public function Module():void
 		{
@@ -35,11 +36,12 @@ package
 		private function initialize():void
 		{
 			_goingRight = false;
-			
+			_status = "Stopped";
 			_stop = true;
 			draw();
-		
+			_runner=createRunner();
 			addChild(_runner);
+			stage.addEventListener(Event.ENTER_FRAME, run, false, 0, true);
 		}
 		
 		public function draw():void
@@ -47,20 +49,19 @@ package
 			_x = 0;
 			_y = 100;
 			// TODO: Move to initialize _runner = createRunner();
-			drawRunner();
-			stage.addEventListener(Event.ENTER_FRAME, run, false, 0, true);
-		
 		}
 		// TODO: Rename to createRunner
-		protected function drawRunner():void
-		{
-			_runner = new Sprite();
-			_runner.graphics.beginFill(0xFF0000);
-			_runner.graphics.drawRect(0, 0, 40, 40);
-			_runner.x = _x;
-			_runner.y = _y;
-			_runner.graphics.endFill();
-			_runner.buttonMode = false;
+		protected function createRunner():Sprite
+		{	
+			
+			var runner:Sprite = new Sprite();
+			runner.graphics.beginFill(0xFF0000);
+			runner.graphics.drawRect(0, 0, 40, 40);
+			runner.x = _x;
+			runner.y = _y;
+			runner.graphics.endFill();
+			runner.buttonMode = false;
+			return runner;
 		}
 		
 
@@ -68,26 +69,40 @@ package
 		{
 			var add:int;
 			if (!_stop)
-			{
+			{	
+				_status = "Going Left";
+				
 				if (_goingRight)
 				{
+					_status = "Going Right";
 					_runner.x += 10;
 					
-					if (_runner.x + 40 >= stage.stageWidth)
+					if (_runner.x + 40 >= stage.stageWidth) {
+						_status = "Bounce!";
 						_goingRight = false;
+					}
 				}
 				else
-				{
+				{	
+					
 					_runner.x -= 10;
-					if (_runner.x <= 0)
+					if (_runner.x <= 0){
 						_goingRight = true;
+						_status = "Bounce!";
+					}
 					
 				}
 			}
 		}
 		
-		public function stop():void
+		public function status():String
 		{
+			return _status;
+		}
+		
+		public function stop():void
+		{	
+			_status = "Stopped";
 			_stop = true;
 		}
 		
@@ -98,9 +113,11 @@ package
 		
 		public function destroy():void
 		{	
-			
+			_status = "Unloaded";
 			stage.removeEventListener(Event.ENTER_FRAME, run);
 		}
+		
+		
 	
 	}
 

@@ -34,6 +34,7 @@ package
 		private var _txtLoad:TextField;
 		private var _txtRemove:TextField;
 		private var _txtStop:TextField;
+		private var _txtStatus:TextField;
 		
 		public function Main():void 
 		{
@@ -88,6 +89,13 @@ package
 			
 			_remove.x = _x;
 			_remove.y = _y;
+			
+			_txtStatus.text = "Unloaded";
+			_txtStatus.x = _x + 120;
+			_txtStatus.y = y;
+			_txtStatus.width = 300;
+			_txtStatus.height=20;
+			
 		}
 		
 		
@@ -108,6 +116,7 @@ package
 			_remove = createButton(remove);
 			_txtRemove =createTextField("Remove");
 			
+			_txtStatus = createTextField("Status");
 			
 			addChild(_load);
 			addChild(_play);
@@ -119,6 +128,7 @@ package
 			addChild(_txtPlay);
 			addChild(_txtStop);
 			addChild(_txtRemove);
+			addChild(_txtStatus);
 		}
 		
 	
@@ -152,7 +162,8 @@ package
 			{
 				trace("load");
 				// TODO: Missing semi colon
-				_myLoader= new Loader()
+				// =__=
+				_myLoader = new Loader();
 				var url:URLRequest = new URLRequest("Module.swf"); 
 				_myLoader.load(url);
 				_myLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, getContent, false, 0, true);
@@ -169,6 +180,7 @@ package
 			if (_isLoaded) 
 			{
 				_externalSwf.play();
+				
 			}
 
 		}
@@ -177,7 +189,7 @@ package
 		{
 			trace("stop");
 			if (_isLoaded) 
-			{
+			{	
 				_externalSwf.stop();
 			}
 		}
@@ -185,11 +197,15 @@ package
 		private function remove(e:Event):void
 		{	
 			if (_isLoaded) 
-			{
+			{	
+				
+				removeEventListener(Event.ENTER_FRAME, objectState);
 				_externalSwf.stop();
 				_externalSwf.destroy();
 				removeChild(_externalSwf as DisplayObject);
 				_isLoaded = false;
+				_txtStatus.text="Unloaded"
+				
 			}
 		}
 		
@@ -198,7 +214,7 @@ package
 			_externalSwf = e.target.content as IRunner;
 			_isLoaded = true;
 			addChild(_externalSwf as DisplayObject);
-			
+			addEventListener(Event.ENTER_FRAME, objectState, false, 0, true);
 			_myLoader = null;
 
 		}
@@ -206,6 +222,12 @@ package
 		private function errorHandler(e:Event):void
 		{
 			trace("ERROR.File not found.");
+		}
+		
+		private function objectState(e:Event):void
+		{
+			if(_isLoaded)
+				_txtStatus.text = _externalSwf.status();
 		}
 		
 	}

@@ -11,6 +11,7 @@ package
 		function play():void;
 		function stop():void;
 		function destroy():void;
+		function status():String;
 	}
 	
 }
