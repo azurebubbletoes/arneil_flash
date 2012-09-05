@@ -151,6 +151,7 @@ package
 			if (!_isLoaded)
 			{
 				trace("load");
+				// TODO: Missing semi colon
 				_myLoader= new Loader()
 				var url:URLRequest = new URLRequest("Module.swf"); 
 				_myLoader.load(url);

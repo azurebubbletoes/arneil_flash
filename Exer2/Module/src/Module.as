@@ -46,11 +46,12 @@ package
 		{
 			_x = 0;
 			_y = 100;
+			// TODO: Move to initialize _runner = createRunner();
 			drawRunner();
 			stage.addEventListener(Event.ENTER_FRAME, run, false, 0, true);
 		
 		}
-		
+		// TODO: Rename to createRunner
 		protected function drawRunner():void
 		{
 			_runner = new Sprite();
