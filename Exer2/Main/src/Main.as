@@ -197,6 +197,7 @@ package
 			trace("stop");
 			if (_isLoaded) 
 			{	
+				// TODO: Remove. No need
 				dispatchEvent(new Event(STOP));
 				_externalSwf.stop();
 			}
@@ -209,6 +210,7 @@ package
 				_externalSwf.stop();
 				_externalSwf.destroy();
 				removeChild(_externalSwf as DisplayObject);
+				// TODO: Remove. No need
 				dispatchEvent(new Event(REMOVE));
 				_isLoaded = false;
 				
@@ -222,10 +224,12 @@ package
 			_isLoaded = true;
 			addChild(_externalSwf as DisplayObject);
 			
+			// TODO: Remove. No need
 			addEventListener(STOP, Stopped, false, 0, true);
+			// TODO: Remove. No need
 			addEventListener(REMOVE, Removed, false, 0, true);
+			
 			_myLoader = null;
-
 		}
 		
 		private function errorHandler(e:Event):void

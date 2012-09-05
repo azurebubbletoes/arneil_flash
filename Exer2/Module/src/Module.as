@@ -41,6 +41,7 @@ package
 			_goingRight = false;
 			_stop = true;
 			
+			// TODO: Remove. No need
 			addEventListener(BOUNCE, Bounce, false, 0, true);
 			addEventListener(LEFT, Left, false, 0, true);
 			addEventListener(RIGHT, Right, false, 0, true);
@@ -130,18 +131,21 @@ package
 			stage.removeEventListener(Event.ENTER_FRAME, run);
 		}
 		
+		// TODO: Remove. No need
 		private function Bounce(e:Event):void
 		{
 			_txtStatus.text = "Bounce!";
 			//trace("bounce!");
 		}
 		
+		// TODO: Remove. No need
 		private function Left(e:Event):void
 		{
 			//trace("left!");
 			_txtStatus.text = "Left!";
 		}
 		
+		// TODO: Remove. No need
 		private function Right(e:Event):void
 		{
 			//trace("right!");
