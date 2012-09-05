@@ -9,11 +9,15 @@ package
 	 */
 	public class Module extends Sprite implements IRunner
 	{
+		private const BOUNCE:String = "Bounce";
+		private const LEFT:String =   "LEFT";
+		private const RIGHT:String =  "RIGHT";
+		
 		
 		private var _runner:Sprite;
 		private var _goingRight:Boolean;
 		private var _stop:Boolean;
-		private var _status:String;
+		
 		
 		public function Module():void
 		{
@@ -26,6 +30,7 @@ package
 		private function init(e:Event = null):void
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+			
 			// entry point
 			
 			initialize();
@@ -34,27 +39,33 @@ package
 		private function initialize():void
 		{
 			_goingRight = false;
-			_status = "Stopped";
 			_stop = true;
+			
+			addEventListener(BOUNCE, Bounce, false, 0, true);
+			addEventListener(LEFT, Left, false, 0, true);
+			addEventListener(RIGHT, Right, false, 0, true);
+			
+			
 			
 			createChildren();
 			draw();
 			
-			stage.addEventListener(Event.ENTER_FRAME, run, false, 0, true);
 		}
 		
-		private function createChildren():void 
+		private function createChildren():void
 		{
-			_runner=createRunner();
+			_runner = createRunner();
 			addChild(_runner);
+			stage.addEventListener(Event.ENTER_FRAME, run, false, 0, true);
 		}
 		
 		public function draw():void
 		{
 			_runner.x = 0;
 			_runner.y = 100;
+			// TODO: Move to initialize _runner = createRunner();
 		}
-
+		// TODO: Rename to createRunner
 		protected function createRunner():Sprite
 		{	
 			
@@ -73,39 +84,38 @@ package
 			var add:int;
 			if (!_stop)
 			{	
-				_status = "Going Left";
+				
 				
 				if (_goingRight)
 				{
-					_status = "Going Right";
+			
 					_runner.x += 10;
+					dispatchEvent(new Event(RIGHT));
 					
 					if (_runner.x + 40 >= stage.stageWidth) {
-						_status = "Bounce!";
+						dispatchEvent(new Event(BOUNCE));
 						_goingRight = false;
 					}
 				}
 				else
 				{	
-					
 					_runner.x -= 10;
-					if (_runner.x <= 0){
+					dispatchEvent(new Event(LEFT));
+					if (_runner.x <= 0) {
+						dispatchEvent(new Event(BOUNCE));
 						_goingRight = true;
-						_status = "Bounce!";
+		
 					}
 					
 				}
 			}
 		}
 		
-		public function status():String
-		{
-			return _status;
-		}
+
 		
 		public function stop():void
 		{	
-			_status = "Stopped";
+			
 			_stop = true;
 		}
 		
@@ -116,11 +126,27 @@ package
 		
 		public function destroy():void
 		{	
-			_status = "Unloaded";
+
 			stage.removeEventListener(Event.ENTER_FRAME, run);
 		}
 		
+		private function Bounce(e:Event):void
+		{
+			_txtStatus.text = "Bounce!";
+			//trace("bounce!");
+		}
 		
+		private function Left(e:Event):void
+		{
+			//trace("left!");
+			_txtStatus.text = "Left!";
+		}
+		
+		private function Right(e:Event):void
+		{
+			//trace("right!");
+			_txtStatus.text = "Right!";
+		}
 	
 	}
 
