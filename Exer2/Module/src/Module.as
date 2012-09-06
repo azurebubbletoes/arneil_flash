@@ -9,9 +9,9 @@ package
 	 */
 	public class Module extends Sprite implements IRunner
 	{
-		private const BOUNCE:String = "Bounce";
-		private const LEFT:String =   "LEFT";
-		private const RIGHT:String =  "RIGHT";
+		private const BOUNCE:String = "bounce";
+		private const LEFT:String =   "left";
+		private const RIGHT:String =  "right";
 		
 		
 		private var _runner:Sprite;
@@ -41,11 +41,6 @@ package
 			_goingRight = false;
 			_stop = true;
 			
-			// TODO: Remove. No need
-			addEventListener(BOUNCE, Bounce, false, 0, true);
-			addEventListener(LEFT, Left, false, 0, true);
-			addEventListener(RIGHT, Right, false, 0, true);
-			
 			
 			
 			createChildren();
@@ -62,7 +57,7 @@ package
 		
 		public function draw():void
 		{
-			_runner.x = 0;
+			_runner.x =5;
 			_runner.y = 100;
 			// TODO: Move to initialize _runner = createRunner();
 		}
@@ -131,26 +126,7 @@ package
 			stage.removeEventListener(Event.ENTER_FRAME, run);
 		}
 		
-		// TODO: Remove. No need
-		private function Bounce(e:Event):void
-		{
-			_txtStatus.text = "Bounce!";
-			//trace("bounce!");
-		}
 		
-		// TODO: Remove. No need
-		private function Left(e:Event):void
-		{
-			//trace("left!");
-			_txtStatus.text = "Left!";
-		}
-		
-		// TODO: Remove. No need
-		private function Right(e:Event):void
-		{
-			//trace("right!");
-			_txtStatus.text = "Right!";
-		}
 	
 	}
 
