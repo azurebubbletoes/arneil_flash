@@ -1,13 +1,12 @@
 package  
 {
 	import flash.events.Event;
-	import flash.events.IEventDispatcher;
 	
 	/**
 	 * ...
 	 * @author arneil mercado
 	 */
-	public interface IRunner extends IEventDispatcher
+	public interface IRunner 
 	{
 		function play():void;
 		function stop():void;
