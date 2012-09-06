@@ -206,6 +206,8 @@ package
 				_txtStatus.text = "Unloaded";
 				_externalSwf.stop();
 				_externalSwf.destroy();
+				
+				// TODO: Extend your IRunner w/ IEventDispatcher so you don't have to type cast it everytime.
 				(_externalSwf as DisplayObject).removeEventListener(BOUNCE, Bounce);
 				(_externalSwf as DisplayObject).removeEventListener(LEFT, Left);
 				(_externalSwf as DisplayObject).removeEventListener(RIGHT, Right);
@@ -223,6 +225,7 @@ package
 			
 			addChild(_externalSwf as DisplayObject);
 			
+			// TODO: Extend your IRunner w/ IEventDispatcher so you don't have to type cast it everytime.
 			(_externalSwf as DisplayObject).addEventListener(BOUNCE, Bounce, false, 0, true);
 			(_externalSwf as DisplayObject).addEventListener(LEFT, Left, false, 0, true);
 			(_externalSwf as DisplayObject).addEventListener(RIGHT, Right, false, 0, true);
@@ -234,23 +237,20 @@ package
 		{
 			trace("ERROR.File not found.");
 		}
-		
+		// TODO: Don't forget naming conventions
 		private function Bounce(e:Event):void
 		{
-			
-				_txtStatus.text = "Bounce!";
+			_txtStatus.text = "Bounce!";
 		}
 		
 		private function Left(e:Event):void
 		{
-			
-				_txtStatus.text = "Left!";
+			_txtStatus.text = "Left!";
 		}
 		
 		private function Right(e:Event):void
 		{
-			
-				_txtStatus.text = "Right!";
+			_txtStatus.text = "Right!";
 		}
 	
 	}
