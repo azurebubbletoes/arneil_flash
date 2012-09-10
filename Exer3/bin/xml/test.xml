@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<test>
+		<node id="1" title="a">
+			<node1 id="1" title="a-1"></node1>
+			
+		</node>
+		<node id="2" title="b"></node>
+		<node id="2" title="b"></node>
+	</test>
+</data>
