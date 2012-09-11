@@ -10,24 +10,29 @@ package components.treeview
 	 */
 	public class TreeViewComponent extends Sprite
 	{
-		private var _nodes:TreeNodeList; //root Node
+		public const _x:Number=50;
+		public const _y:Number=50;
 		
+		private var _nodes:Vector.<TreeNode> //root Node
 		//private var _isUpdating:Boolean;
-		
-		//getters,setters, constructor
-		// TODO: Like I've said many times, do not put the logic of loading the XML, or even parsing it, inside your TreeViewComponent.
-		// What if I pass in a path to an XML which doesn't follow to your XML structure? Your tree view component will not work.
-		// The data that should be passed here is the TreeViewData object which contains all the data it needs.
 		
 		public function TreeViewComponent()
 		{
-			_nodes = new TreeNodeList();
-			
+			_nodes = new Vector.<TreeNode>();
+			//_nodes.
 			//this._isUpdating = false;
 		}
 		
+		private function draw():void
+		{
+			trace("draw");
+			for (var i:int= 0; i < _nodes.length; i++ )
+				_nodes[i].draw();
+			
+		}
+		
 		public function beginUpdate():void
-		{	
+		{
 			//var e:TreeEvent = new TreeEvent(e.START_UPDATE, false, true);
 			//this._isUpdating = true;
 			//e.isUpdating = true;
@@ -41,20 +46,29 @@ package components.treeview
 			//e.isUpdating = false;
 			//this._isUpdating = false;
 			//dispatchEvent(e);
+			draw();
 		}
 		
-		public function get nodes():TreeNodeList 
+		public function clear():void
+		{
+			while (_nodes.length > 0)
+			{
+				var node:TreeNode = _nodes.pop();
+				node.clear();
+			}
+			
+			removeChild(this);
+		}
+		
+		public function get nodes():Vector.<TreeNode>
 		{
 			return _nodes;
 		}
 		
-		public function set nodes(value:TreeNodeList):void 
+		public function set nodes(value:Vector.<TreeNode>):void
 		{
 			_nodes = value;
 		}
-	
-		// TODO: You're inheriting from Sprite which means your class already has x and y properties.
-		// This will create a conflict!
 	
 	}
 

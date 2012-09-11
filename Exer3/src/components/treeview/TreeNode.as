@@ -1,6 +1,8 @@
 package components.treeview
 {
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import flash.text.TextField;
 	
 	/**
 	 * ...
@@ -8,23 +10,28 @@ package components.treeview
 	 */
 	public class TreeNode extends Sprite
 	{
-		private var _treeNodeList:TreeNodeList;
+		private var _nodes:Vector.<TreeNode>;
+		private var _depth:int;
 		private var _id:String;
 		private var _name:String;
 		
-		public function TreeNode(id:String, name:String)
+		private var _treeViewComponent:TreeViewComponent;
+		
+		public function TreeNode(ref:TreeViewComponent, id:String, name:String)
 		{
 			this._id = id;
 			this._name = name;
+			this.treeViewComponent = ref;
 		}
 		
 		public function clear():void
 		{
-			if (_treeNodeList)
+			while (_nodes.length > 0)
 			{
-				//removeChild(_treeNodeList);
-				_treeNodeList.clear();
+				var node:TreeNode = _nodes.pop();
+				node.clear();
 			}
+			
 			removeChild(this);
 		}
 		
@@ -48,9 +55,20 @@ package components.treeview
 			_id = value;
 		}
 		
-		private function draw():void
+		public function get treeViewComponent():TreeViewComponent
+		{
+			return _treeViewComponent;
+		}
+		
+		public function set treeViewComponent(value:TreeViewComponent):void
+		{
+			_treeViewComponent = value;
+		}
+		
+		public function draw():void
 		{
 		
+			
 		}
 	
 	}
