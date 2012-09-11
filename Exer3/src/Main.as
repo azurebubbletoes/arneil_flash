@@ -1,5 +1,6 @@
 package
 {
+	import components.treeview.TreeNode;
 	import components.treeview.TreeViewComponent;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -25,7 +26,9 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			new TreeViewComponent("xml/test.xml", 10, 10);
+			var tree:TreeViewComponent = new TreeViewComponent();
+			tree.nodes.add(new TreeNode("id", "le name"));
+			tree.nodes.add(new TreeNode("id2", "le name2"));
 		}
 		
 	}

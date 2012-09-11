@@ -1,5 +1,6 @@
 package components.treeview
-{
+{	
+	import flash.display.Sprite;
 	/**
 	 * ...
 	 * @author arneil mercado
@@ -7,45 +8,33 @@ package components.treeview
 	public class TreeNodeList extends Sprite
 	{
 		private var _collapseIcon:Collapser;
-		private var _treeNodes:Vector.<TreeNode>;
-		private var _height:int; 
-		private var _depth:int;
+		private var _nodes:Vector.<TreeNode>;
 		
-		
-		private function draw():void {}//draw nodes
-		private function loadMXL(xml:XML):void { }
-		
-		
-		
-		private function slideNodes(e:Event):void { }//
-		private function collapseNodes(e:Event):void { }
-		private function changeNodes(e:Event):void { }
-		
-		
-		//
-		public function TreeNodeList() {}
-		
-		public function get height():int 
-		{
-			return _height;
+		public function TreeNodeList() {
+				_nodes = new Vector.<TreeNode>();
+		}
+		public function add(t:TreeNode):void {
+				_nodes[_nodes.length] = t;
+		}
+		public function clear():void {
+			
+			while (_nodes.length != 0) {
+				var node:TreeNode = _nodes.pop();
+				node.clear();
+				removeChild(node);
+			}
+			
 		}
 		
-		public function set height(value:int):void 
+		public function get nodes():Vector.<TreeNode> 
 		{
-			_height = value;
+			return _nodes;
 		}
 		
-		public function get depth():int 
+		public function set nodes(value:Vector.<TreeNode>):void 
 		{
-			return _depth;
+			_nodes = value;
 		}
-		
-		public function set depth(value:int):void 
-		{
-			_depth = value;
-		}
-		
-		
 	}
 
 }

@@ -1,55 +1,58 @@
 package components.treeview
 {
+	import flash.display.Sprite;
+	
 	/**
 	 * ...
 	 * @author arneil mercado
 	 */
 	public class TreeNode extends Sprite
-	{	
-		private var _collapseIcon:Collapser;
-		private var _height:int;
-		private var _depth:int;
+	{
 		private var _treeNodeList:TreeNodeList;
-		private var _treeNode:NodeData; //id ang title
-		private var _collapse:Boolean; //toggle collapse
+		private var _id:String;
+		private var _name:String;
 		
-		private function loadMXL(xml:XML):void { }
-		
-		private function draw():void { }//draw node
-		
-		private function collapseNode():void { }
-		
-		private function slideNode(e:Event):void { }
-		private function clickNode(e:Event):void { }
-		private function changeNode(e:Event):void { }
-		
-		
-		private function mouseOver(e:Event):void { }
-		private function mouseOut(e:Event):void { }
-		
-		
-		public function TreeNode() {}
-		
-		
-		public function get height():int 
+		public function TreeNode(id:String, name:String)
 		{
-			return _height;
+			this._id = id;
+			this._name = name;
 		}
 		
-		public function set height(value:int):void 
+		public function clear():void
 		{
-			_height = value;
+			if (_treeNodeList)
+			{
+				//removeChild(_treeNodeList);
+				_treeNodeList.clear();
+			}
+			removeChild(this);
 		}
 		
-		public function get depth():int 
+		public override function get name():String
 		{
-			return _depth;
+			return _name;
 		}
 		
-		public function set depth(value:int):void 
+		public override function set name(value:String):void
 		{
-			_depth = value;
+			_name = value;
 		}
+		
+		public function get id():String
+		{
+			return _id;
+		}
+		
+		public function set id(value:String):void
+		{
+			_id = value;
+		}
+		
+		private function draw():void
+		{
+		
+		}
+	
 	}
 
 }
