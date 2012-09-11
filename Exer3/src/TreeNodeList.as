@@ -4,23 +4,25 @@ package
 	 * ...
 	 * @author arneil mercado
 	 */
-	public class TreeNodeList 
+	public class TreeNodeList extends Sprite
 	{
+		private var _collapseIcon:Collapser;
 		private var _treeNodes:Vector.<TreeNode>;
 		private var _height:int; 
 		private var _depth:int;
 		
 		
-		private function draw():void {}
+		private function draw():void {}//draw nodes
 		private function loadMXL(xml:XML):void { }
 		
 		
 		
+		private function slideNodes(e:Event):void { }//
 		private function collapseNodes(e:Event):void { }
 		private function changeNodes(e:Event):void { }
 		
 		
-		
+		//
 		public function TreeNodeList() {}
 		
 		public function get height():int 

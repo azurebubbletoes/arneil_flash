@@ -11,8 +11,8 @@ package
 		//node events
 		private const COLLAPSE:String = "COLLAPSE";
 		private const CHANGE:String = "CHANGE";
-		private const ANIMATE:String = "ANIMATE";
-		
+		//private const ANIMATE:String = "ANIMATE";
+		//private const 
 		
 		public function TreeEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false) 
 		{ 
