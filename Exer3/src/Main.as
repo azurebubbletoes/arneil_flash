@@ -1,5 +1,6 @@
 package
 {
+	import components.treeview.TreeViewComponent;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	

@@ -1,4 +1,4 @@
-package  
+package components.treeview
 {
 	import flash.display.Sprite;
 	/**
@@ -25,6 +25,9 @@ package
 		
 		
 		//getters,setters, constructor
+		// TODO: Like I've said many times, do not put the logic of loading the XML, or even parsing it, inside your TreeViewComponent.
+		// What if I pass in a path to an XML which doesn't follow to your XML structure? Your tree view component will not work.
+		// The data that should be passed here is the TreeViewData object which contains all the data it needs.
 		public function TreeViewComponent(path:String,x:int,y:int) 
 		{
 			this.x = x;
@@ -42,6 +45,8 @@ package
 			_path = value;
 		}
 		
+		// TODO: You're inheriting from Sprite which means your class already has x and y properties.
+		// This will create a conflict!
 		public function get x():int 
 		{
 			return _x;
