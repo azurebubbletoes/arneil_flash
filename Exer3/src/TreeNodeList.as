@@ -1,55 +1,49 @@
-package
+package  
 {
-	import flash.display.Sprite;
-	import flash.display.Stage;
-	import flash.text.TextField;
-	import flash.events.Event;
-	import flash.net.URLLoader;
-	import flash.net.URLRequest;
-	import flash.xml.XMLNode;
-	
 	/**
 	 * ...
 	 * @author arneil mercado
 	 */
-	public class TreeNodeList
+	public class TreeNodeList 
 	{
-		private var nodes:Array;
-		private var _path:String;
+		private var _treeNodes:Vector.<TreeNode>;
+		private var _height:int; 
+		private var _depth:int;
 		
-		public function TreeNodeList()
+		
+		private function draw():void {}
+		private function loadMXL(xml:XML):void { }
+		
+		
+		
+		private function collapseNodes(e:Event):void { }
+		private function changeNodes(e:Event):void { }
+		
+		
+		
+		public function TreeNodeList() {}
+		
+		public function get height():int 
 		{
-			nodes = new Array();
+			return _height;
 		}
 		
-		public function addNode(nodename:String, supernode:TreeNode):TreeNode
+		public function set height(value:int):void 
 		{
-			trace("add node function called");
-			var node:TreeNode = new TreeNode(nodename, supernode);
-			nodes[nodes.length] = node;
-			trace("current node length:" + nodes.length);
-			return node;
+			_height = value;
 		}
 		
-		public function renderNodes():void
+		public function get depth():int 
 		{
-			for (var i:int = 0; i < nodes.length; i++)
-			{
-				//trace("@" + i)+": ";
-				(nodes[i] as TreeNode).loadNodes();
-			}
+			return _depth;
 		}
 		
-		public function get path():String
+		public function set depth(value:int):void 
 		{
-			return _path;
+			_depth = value;
 		}
 		
-		public function set path(value:String):void
-		{
-			_path = value;
-		}
-	
+		
 	}
 
 }

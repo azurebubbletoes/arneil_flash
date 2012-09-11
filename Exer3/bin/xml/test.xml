@@ -8,4 +8,13 @@
 		<node id="2" title="b"></node>
 		<node id="2" title="b"></node>
 	</test>
+	
+	<test>
+		<node id="234234" title="a">
+			<node1 id="1" title="a-1"></node1>
+			
+		</node>
+		<node id="2" title="b"></node>
+		<node id="2" title="b"></node>
+	</test>
 </data>
