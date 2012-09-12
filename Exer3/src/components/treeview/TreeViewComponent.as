@@ -11,10 +11,17 @@ package components.treeview
 	 */
 	public class TreeViewComponent extends Sprite
 	{
-		public var _x:Number = 50;
-		public var _y:Number = 50;
-		public var _width:Number = 300;
-		public var _height:Number = 30;
+		private var _startX:Number;
+		private var _startY:Number;
+		
+		private var _maxWidth:Number;
+		private var _maxHeight:Number;
+		
+		private var _horizontalIndent:Number;
+		private var _verticalIndent:Number;
+		
+		private var _useTween:Boolean;
+		private var _autoCollapseWhenNotViewed:Boolean;
 		
 		private var _nodes:Vector.<TreeNode> //root Node
 		
@@ -23,21 +30,33 @@ package components.treeview
 		public function TreeViewComponent()
 		{
 			_nodes = new Vector.<TreeNode>();
+			
+			_startX = 50;
+			_startY= 50;
+		
+			_maxWidth = 300;
+			_maxHeight = 30;
+		
+			_horizontalIndent=20;
+			_verticalIndent=3;
 			//_nodes.
 			//this._isUpdating = false;
 		}
 		
-		private function draw():void
+		private function drawNodes():void
 		{
-			var y:Number = _y;
-			for (var i:int = 0; i < _nodes.length; i++)// , y += _height)
+			
+			
+		
+		}
+		
+		private function initializeDepth():void
+		{
+			for (var i:int = 0; i < _nodes.length; i++)
 			{
-				
-				y+=_nodes[i].draw(_x, y, _width, _height);
-
-				addChild(_nodes[i]);
+				_nodes[i].initializeDepth(0); // initializes the depth of the node and it's branches..
 			}
-							
+		
 		}
 		
 		public function beginUpdate():void
@@ -55,7 +74,8 @@ package components.treeview
 			//e.isUpdating = false;
 			//this._isUpdating = false;
 			//dispatchEvent(e);
-			draw();
+			initializeDepth();
+			drawNodes();
 		}
 		
 		public function clear():void
@@ -78,6 +98,68 @@ package components.treeview
 		{
 			_nodes = value;
 		}
+		
+		public function get startX():Number 
+		{
+			return _startX;
+		}
+		
+		public function set startX(value:Number):void 
+		{
+			_startX = value;
+		}
+		
+		public function get startY():Number 
+		{
+			return _startY;
+		}
+		
+		public function set startY(value:Number):void 
+		{
+			_startY = value;
+		}
+		
+		public function get maxWidth():Number 
+		{
+			return _maxWidth;
+		}
+		
+		public function set maxWidth(value:Number):void 
+		{
+			_maxWidth = value;
+		}
+		
+		public function get maxHeight():Number 
+		{
+			return _maxHeight;
+		}
+		
+		public function set maxHeight(value:Number):void 
+		{
+			_maxHeight = value;
+		}
+		
+		public function get horizontalIndent():Number 
+		{
+			return _horizontalIndent;
+		}
+		
+		public function set horizontalIndent(value:Number):void 
+		{
+			_horizontalIndent = value;
+		}
+		
+		public function get verticalIndent():Number 
+		{
+			return _verticalIndent;
+		}
+		
+		public function set verticalIndent(value:Number):void 
+		{
+			_verticalIndent = value;
+		}
+		
+	
 	
 	}
 

@@ -23,12 +23,13 @@ package components.treeview
 		private var _title:TextField;
 		private var _rectangle:Sprite;
 		private var _label:String;
-		public var _x:Number;
-		public var _y:Number;
-		public var _width:Number;
-		public var _height:Number;
+		private var _x:Number;
+		private var _y:Number;
+		private var _width:Number;
+		private var _height:Number;
+		private var _textIndent:Number;
 		
-		public function Button(label:String, x:Number, y:Number, width:Number, height:Number, type:String = this.NO_NODES)
+		public function Button(label:String, x:Number, y:Number, width:Number, height:Number, type:String = this.NO_NODES, indent:Number=5)
 		{
 			_x = x;
 			_y = y;
@@ -36,6 +37,7 @@ package components.treeview
 			_height = height;
 			_label = label;
 			_icon = type;
+			_textIndent = indent;
 			
 			draw();
 			createChildren();
@@ -107,12 +109,12 @@ package components.treeview
 		private function createText(color:uint):TextField
 		{
 			var title:TextField = new TextField();
-			var txtFormat:TextFormat = new TextFormat("Arial", 25, color, false, null, null, null, null, TextFormatAlign.LEFT);
+			var txtFormat:TextFormat = new TextFormat("Arial", 23, color, false, null, null, null, null, TextFormatAlign.LEFT);
 			title.defaultTextFormat = txtFormat;
 			title.text = _label;
-			title.x = _x + 20;
+			title.x = _x + 20+_textIndent;
 			title.y = _y;
-			title.width = _width - 20;
+			title.width = _width - 20-_textIndent;
 			title.height = _height;
 			return title;
 		}
@@ -137,6 +139,46 @@ package components.treeview
 			//_holder = createHolder();
 			//_holder.text == this.HAS_NODES ? "-" : "+";
 			//addChild(_holder);
+		}
+		
+		public override function get x():Number 
+		{
+			return _x;
+		}
+		
+		public override function set x(value:Number):void 
+		{
+			_x = value;
+		}
+		
+		public override function get y():Number 
+		{
+			return _y;
+		}
+		
+		public override function set y(value:Number):void 
+		{
+			_y = value;
+		}
+		
+		public override function get width():Number 
+		{
+			return _width;
+		}
+		
+		public override function set width(value:Number):void 
+		{
+			_width = value;
+		}
+		
+		public override function get height():Number 
+		{
+			return _height;
+		}
+		
+		public override function set height(value:Number):void 
+		{
+			_height = value;
 		}
 	}
 
