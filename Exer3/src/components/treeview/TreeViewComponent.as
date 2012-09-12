@@ -2,6 +2,7 @@ package components.treeview
 {
 	import flash.display.Sprite;
 	import components.treeview.TreeEvent;
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	
 	/**
@@ -10,10 +11,13 @@ package components.treeview
 	 */
 	public class TreeViewComponent extends Sprite
 	{
-		public const _x:Number=50;
-		public const _y:Number=50;
+		public var _x:Number = 50;
+		public var _y:Number = 50;
+		public var _width:Number = 300;
+		public var _height:Number = 30;
 		
 		private var _nodes:Vector.<TreeNode> //root Node
+		
 		//private var _isUpdating:Boolean;
 		
 		public function TreeViewComponent()
@@ -25,10 +29,15 @@ package components.treeview
 		
 		private function draw():void
 		{
-			trace("draw");
-			for (var i:int= 0; i < _nodes.length; i++ )
-				_nodes[i].draw();
-			
+			var y:Number = _y;
+			for (var i:int = 0; i < _nodes.length; i++)// , y += _height)
+			{
+				
+				y+=_nodes[i].draw(_x, y, _width, _height);
+
+				addChild(_nodes[i]);
+			}
+							
 		}
 		
 		public function beginUpdate():void
