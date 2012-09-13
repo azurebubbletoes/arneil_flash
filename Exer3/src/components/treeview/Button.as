@@ -29,7 +29,7 @@ package components.treeview
 		private var _height:Number;
 		private var _textIndent:Number;
 		
-		public function Button(label:String, x:Number, y:Number, width:Number, height:Number, type:String = this.NO_NODES, indent:Number=5)
+		public function Button(label:String, x:Number, y:Number, width:Number, height:Number, type:String = this.NO_NODES)
 		{
 			_x = x;
 			_y = y;
@@ -37,7 +37,7 @@ package components.treeview
 			_height = height;
 			_label = label;
 			_icon = type;
-			_textIndent = indent;
+			//_textIndent = indent;
 			
 			draw();
 			createChildren();
@@ -112,9 +112,9 @@ package components.treeview
 			var txtFormat:TextFormat = new TextFormat("Arial", 23, color, false, null, null, null, null, TextFormatAlign.LEFT);
 			title.defaultTextFormat = txtFormat;
 			title.text = _label;
-			title.x = _x + 20+_textIndent;
+			title.x = _x + 20; //+_textIndent;
 			title.y = _y;
-			title.width = _width - 20-_textIndent;
+			title.width = _width - 20; //-_textIndent;
 			title.height = _height;
 			return title;
 		}
@@ -134,49 +134,49 @@ package components.treeview
 		}
 		
 		public function toggleIcon():void
-		{	
+		{
 			//removeChild(_holder);
 			//_holder = createHolder();
 			//_holder.text == this.HAS_NODES ? "-" : "+";
 			//addChild(_holder);
 		}
 		
-		public override function get x():Number 
+		public override function get x():Number
 		{
 			return _x;
 		}
 		
-		public override function set x(value:Number):void 
+		public override function set x(value:Number):void
 		{
 			_x = value;
 		}
 		
-		public override function get y():Number 
+		public override function get y():Number
 		{
 			return _y;
 		}
 		
-		public override function set y(value:Number):void 
+		public override function set y(value:Number):void
 		{
 			_y = value;
 		}
 		
-		public override function get width():Number 
+		public override function get width():Number
 		{
 			return _width;
 		}
 		
-		public override function set width(value:Number):void 
+		public override function set width(value:Number):void
 		{
 			_width = value;
 		}
 		
-		public override function get height():Number 
+		public override function get height():Number
 		{
 			return _height;
 		}
 		
-		public override function set height(value:Number):void 
+		public override function set height(value:Number):void
 		{
 			_height = value;
 		}
