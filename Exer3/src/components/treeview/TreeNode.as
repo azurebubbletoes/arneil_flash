@@ -5,6 +5,8 @@ package components.treeview
 	import flash.text.TextField;
 	import flash.events.MouseEvent;
 	import flash.events.Event;
+
+
 	
 	/**
 	 * ...
@@ -19,7 +21,6 @@ package components.treeview
 		private var _button:Button;
 		private var _treeViewComponent:TreeViewComponent;
 		private var _nodeIndex:int;
-		private var _startY:Number;
 		private var _isExpanded:Boolean;
 		
 		public function TreeNode(ref:TreeViewComponent, id:String, name:String)
@@ -27,13 +28,11 @@ package components.treeview
 			
 			this._id = id;
 			this._name = name;
-			this.isExpanded = false;
 			
 			this.nodes = new Vector.<TreeNode>();
-			
 			this.treeViewComponent = new TreeViewComponent();
 			this.treeViewComponent = ref;
-		
+			//this.isExpanded = false || this.nodes.length == 0;
 		}
 		
 		public function clear():void
@@ -117,19 +116,14 @@ package components.treeview
 			_isExpanded = value;
 		}
 		
-		public function get startY():Number
-		{
-			return _startY;
-		}
-		
-		public function set startY(value:Number):void
-		{
-			_startY = value;
-		}
-		
 		public function get button():Button
 		{
 			return _button;
+		}
+		
+		public function get hasNodes():Boolean
+		{
+			return this.nodes.length > 0;
 		}
 		
 		public function set button(value:Button):void
@@ -137,15 +131,18 @@ package components.treeview
 			_button = value;
 		}
 		
+		public function getAdjustmentHeight():Number
+		{
+			return isExpanded ? (this.height - this.button.height) : (-1 * this.nodes.length * this.height);
+		}
+		
 		public function initializeDepth(depth:Number):void
 		{
 			
 			for (var i:int = 0; i < this.nodes.length; i++)
 			{
-				trace("depth!");
-				trace(this.depth);
 				this.nodes[i].initializeDepth(depth + 1);
-				
+				this.nodes[i].isExpanded = false || this.nodes.length == 0;
 			}
 			this.depth = depth;
 		
@@ -153,133 +150,213 @@ package components.treeview
 		
 		public function draw():void
 		{
-			//var startY:Number = tree.startY;
-			this.isExpanded = false || this.nodes.length == 0;
-			var tree:TreeViewComponent = this.treeViewComponent;
 			
-			var x:Number = tree.startX + (this.depth * tree.horizontalIndent);
-			var y:Number = this.startY; // (this.nodeIndex * tree.maxHeight);
-			var width:Number = tree.maxWidth + tree.startX - x;
-			var height:Number = tree.maxHeight;
-			//this.isExpanded = false;
+			this.button = new Button(this.name, this.hasNodes);
+		
 			
-			var collapseIcon:String = this.nodes.length > 0 ? "+" : "-";
-			
-			_button = new Button(this.name, x, y, width, height, collapseIcon);
 			this.addEventListener(MouseEvent.CLICK, nodeClick, false, 0, true);
+			this.addEventListener(TreeEvent.NODE_SELECT, this.treeViewComponent.nodeClick, false, 0, true);
 			
-			this.addChild(_button);
+			this.addChild(this.button);
 			
-			if (tree.autoCollapseWhenNotViewed)
-				drawNodes();
-		
-			//this.initializeIndices();
+			if (this.treeViewComponent.autoCollapseWhenNotViewed)
+				this.createNodes();
 		
 		}
 		
-		public function numberOfExpandedNodes():int
+		public function createNodes():void
 		{
 			
-			var branches:int = this.nodes.length;
-			
-			if (this.nodes.length > 0)
-			{
-				for (var i:int = 0; i < this.nodes.length; i++)
-				{
-					if (this.nodes[i].isExpanded)
-						branches += this.nodes[i].numberOfExpandedNodes();
-				}
-			}
-			return branches;
-		
-		}
-		
-		public function nodeClick(e:Event):void
-		{
-			var hasNodes:Boolean = this.nodes.length > 0;
-			var subNodes:int = this.numberOfExpandedNodes();
-			var expand:Boolean = this.isExpanded;
-			
-			if (hasNodes)
-			{
-				this.treeViewComponent.nodeClose(this);
-				if (this.isExpanded)
-				{
-					this.removeNodes();
-				}
-				else
-				{
-					
-					this.drawNodes();
-					subNodes = this.numberOfExpandedNodes();
-				}
-				
-			}
-		
-		}
-		
-		public function equals(t:TreeNode):Boolean
-		
-		{
-			return this.id == t.id && this.name == name && this.nodes == t.nodes && this.treeViewComponent == t.treeViewComponent;
-		}
-		
-		public function initializeIndeces():void
-		{
-			if (this.nodes.length > 0)
-			{
-				for (var i:int = 0; i < this.nodes.length; i++)
-				{
-					this.nodes[i].nodeIndex = i; // initializes the depth of the node and it's branches..
-					this.nodes[i].initializeIndeces();
-				}
-			}
-		
-		}
-		
-		public function drawNodes():void
-		{
 			this.isExpanded = true;
-			var y:Number = this.startY + _button.height;
-			for (var i:int = 0; i < this.nodes.length; i++, y += _button.height)
+			
+			var y:Number = this.button.y + this.button.height;
+			var x:Number = this.button.x + ((this.depth + 1) * treeViewComponent.horizontalIndent);
+			
+			for (var i:int = 0; i < this.nodes.length; i++, y += 30)
 			{
-				this.nodes[i].startY = y;
+				this.nodes[i].y = y;
+				this.nodes[i].x = x;
 				this.nodes[i].draw();
-				
+				this.nodes[i].addEventListener(TreeEvent.NODE_ADJUST, adjustHeight, false, 0, true);
 				this.addChild(this.nodes[i]);
-				this.nodes[i].addEventListener(MouseEvent.CLICK, nodeClick, false, 0, true);
-				this.nodes[i].addEventListener(TreeEvent.NODE_ADJUST, nodeAdjust, false, 0, true);
 			}
 		}
 		
 		public function removeNodes(includeSubNodes:Boolean = false):void
 		{
-			this.isExpanded = false;
+			this.isExpanded = false || !hasNodes;
 			
-			if (this.nodes.length > 0)
+			//if (this.hasNodes)
+			//{
+			for (var i:int = 0; i < this.nodes.length; i++)
 			{
-				for (var i:int = 0; i < this.nodes.length; i++)
+				//if (includeSubNodes)
+				//	this.nodes[i].removeNodes(includeSubNodes);
+				if (contains(this.nodes[i]))
 				{
-					if (includeSubNodes)
-						this.nodes[i].removeNodes(includeSubNodes);
-					if (contains(this.nodes[i]))
+					//this.nodes[i].removeEventListener(MouseEvent.CLICK, nodeClick, false);
+					
+					//var tween:Tweener = new Tweener();
+					//this.nodes[i].button.y += 30;
+					//tween.moveTween(this.nodes[i].button, this.nodes[i].button.y-30, 10);
+					
+					this.nodes[i].removeChild(this.nodes[i].button);
+					this.nodes[i].button = null;
+					this.removeChild(this.nodes[i]);
+				}
+				
+			}
+			//}/*else{
+		
+			//this.removeEventListener(MouseEvent.CLICK,nodeClick,false);
+		/*	this.removeChild(this.button);
+		   this.button=null;
+		
+		 }*/
+		}
+		
+		public function nodeClick(event:Event):void
+		{
+			//trace("nodeclick");
+			event.stopPropagation();
+			//trace("click sa node @ depth"+this.depth);
+			
+			//trace("before "+this.isExpanded)
+			if (this.hasNodes)
+			{
+				//this.treeViewComponent.nodeClose(this);
+				if (this.isExpanded)
+				{
+					
+					this.removeNodes(false);
+				}
+				else
+				{
+					
+					this.createNodes();
+				}
+				
+			}
+			
+			//	trace(getAdjustmentHeight());
+			
+			var e:TreeEvent = new TreeEvent(TreeEvent.NODE_SELECT, false);
+			e.node = this;
+			e.adjustmentHeight = this.getAdjustmentHeight();
+			dispatchEvent(e);
+			trace("-----------------------------------------------")
+			trace("height!: " + getAdjustmentHeight());
+			var f:TreeEvent = new TreeEvent(TreeEvent.NODE_ADJUST, true);
+			f.node = this;
+			f.adjustmentHeight = this.getAdjustmentHeight();
+			dispatchEvent(f);
+		}
+		
+		public function adjustHeight(e:TreeEvent):void
+		{
+			
+			//this.parent.dispatchEvent(e);
+			//	e.stopPropagation();
+			trace("adjustheight sa tree node")
+			//trace(e.currentTarget.name)
+			
+			var target:TreeNode = e.target as TreeNode;
+			var curTarget:TreeNode = e.currentTarget as TreeNode;
+			trace("@depth :" + e.node.depth)
+			trace("target :" + target.name);
+			trace("ctarget :" + curTarget.name); //variable change
+			trace("end");
+			
+			var hasPassed:Boolean = false;
+			for (var i:int = this.nodes.length - 1; i >= 0; i--)
+			{
+				//if(this.nodes[i].containsNode())
+				
+				if (!nodes[i].equals(target) && !nodes[i].containsNode(target) && !hasPassed)
+				{
+					if (this.nodes[i].button != null)
 					{
-						this.nodes[i].removeEventListener(MouseEvent.CLICK, nodeClick, false);
-						this.nodes[i].removeEventListener(TreeEvent.NODE_ADJUST, nodeAdjust, false);
-						this.removeChild(this.nodes[i]);
-						this.nodes[i].removeChild(this.nodes[i].button);
-						this.nodes[i].button = null;
+						
+						//this.nodes[i].button.y += e.adjustmentHeight;
+						
+						//new Tweener().moveTween(this.nodes[i].button, this.nodes[i].button.y + e.adjustmentHeight, 10);
+						this.nodes[i].button.y += e.adjustmentHeight;
+						//this.nodes[i].button.y += e.adjustmentHeight;
+						this.nodes[i].adjustSubNodes(e.adjustmentHeight);
 					}
 				}
+				
+				if (this.nodes[i].equals(target) || this.nodes[i].containsNode(target))
+					hasPassed = true;
+				
 			}
+		
+		}
+		
+		public function adjustSubNodes(height:Number):void
+		{
+			
+			//if (this.isExpanded){
+			
+			for (var i:int = 0; i < this.nodes.length; i++)
+			{
+				if (this.nodes[i].button) {
+					//new Tweener().moveTween(this.nodes[i].button, this.nodes[i].button.y+height, 10);
+					this.nodes[i].button.y += height;
+				}
+				if (this.isExpanded)
+					this.nodes[i].adjustSubNodes(height);
+			}
+			//}
+		
+		}
+		
+		public function nodeUncollapse(node:TreeNode):void
+		{
+			trace("@depth" + this.depth);
+			for (var i:int = 0; i < this.nodes.length; i++)
+			{
+				if (!this.nodes[i].containsNode(node))
+				{
+					
+					trace("adjustheight -----------------");
+					trace("adjustheight @" + this.nodes[i].depth);
+					
+					if (nodes[i].isExpanded)
+					{
+						var f:TreeEvent = new TreeEvent(TreeEvent.NODE_ADJUST, true);
+						f.node = this.nodes[i];
+						f.adjustmentHeight = nodes[i].nodes.length * 30 * -1;
+						
+						this.nodes[i].dispatchEvent(f);
+						
+						if (nodes[i].hasNodes)
+							nodes[i].nodeUncollapse(node);
+					}
+					
+					this.nodes[i].removeNodes();
+					
+				}
+				else
+				{
+					if (!nodes[i].equals(node))
+						nodes[i].nodeUncollapse(node);
+					
+				}
+			}
+		
+		}
+		
+		public function equals(t:TreeNode):Boolean
+		{
+			return this.id == t.id && this.name == t.name && this.nodes == t.nodes && this.treeViewComponent == t.treeViewComponent;
 		}
 		
 		public function containsNode(t:TreeNode):Boolean
 		{
 			var flag:Boolean = this.equals(t);
 			
-			trace("@" + this.name);
-			if (!flag)
+			if (!flag && this.hasNodes)
 			{
 				for (var i:int = 0; i < this.nodes.length; i++)
 				{
@@ -287,19 +364,14 @@ package components.treeview
 					
 					if (flag)
 					{
-						trace("flag break");
 						break;
 					}
 				}
 			}
 			return flag;
 		}
-		
-		public function nodeAdjust(e:TreeEvent):void
-		{
-			trace("@depth" + this.depth);
-			dispatchEvent(e);
-		}
+	
+	
 	
 	}
 

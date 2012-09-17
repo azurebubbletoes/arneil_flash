@@ -3,8 +3,18 @@ package
 	import components.treeview.Button;
 	import components.treeview.TreeNode;
 	import components.treeview.TreeViewComponent;
+	import components.treeview.TreeEvent;
+	import flash.text.StaticText;
+
+	import flash.display.SimpleButton;
 	import flash.display.Sprite;
+	import flash.text.TextFormat;
+	import flash.text.TextField;
+	import flash.display.Shape;
+	import flash.display.Sprite;
+	import flash.display.MovieClip;
 	import flash.events.Event;
+	
 	
 	/**
 	 * ...
@@ -15,7 +25,7 @@ package
 		
 		public function Main():void
 		{
-			trace("asd");
+			
 			if (stage)
 				init();
 			else
@@ -26,36 +36,33 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			var tree:TreeViewComponent = new TreeViewComponent();
 			
-			//addChild(tree);
-			tree.nodes.push(new TreeNode(tree, "one", "one"));
-			tree.nodes.push(new TreeNode(tree, "two", "two"));
-			tree.nodes.push(new TreeNode(tree, "two", "three"));
-			tree.nodes.push(new TreeNode(tree, "two", "four"));
-			tree.nodes.push(new TreeNode(tree, "two", "five"));
-			tree.nodes.push(new TreeNode(tree, "two", "six"));
-			tree.nodes.push(new TreeNode(tree, "two", "seven"));
-			//tree.nodes.push(new TreeNode(tree, "id", "three"));
-			//tree.nodes[0].nodes.push(new TreeNode(tree, "id", "one-one"));
-			//tree.nodes[0].nodes.push(new TreeNode(tree, "id", "one-two"));
-			var t:TreeNode = new TreeNode(tree, "id", "one-one");
+			   var tree:TreeViewComponent = new TreeViewComponent();
+				
 			
+			  
+			   tree.nodes.push(new TreeNode(tree, "one", "one"));
+			   
 			
-			tree.nodes[0].nodes.push(t);
-			tree.nodes[0].nodes.push(new TreeNode(tree, "id", "one-two"));
-			tree.nodes[1].nodes.push(new TreeNode(tree, "id", "two-one"));
-			tree.nodes[1].nodes.push(new TreeNode(tree, "id", "two-two"));
-			tree.nodes[5].nodes.push(new TreeNode(tree, "id", "five"));
-			tree.nodes[6].nodes.push(new TreeNode(tree, "id", "five"));
-			tree.nodes[1].nodes[1].nodes.push(new TreeNode(tree, "id", "two-two-one"));
-			
-			//trace(tree.nodes[0].containsNode(t));
-			
-			tree.endUpdate();
-			addChild(tree);
-		
+			   tree.nodes[0].nodes.push(new TreeNode(tree, "one", "one-one"));
+			   tree.nodes[0].nodes[0].nodes.push(new TreeNode(tree, "one", "one-one-one"));
+			   tree.nodes[0].nodes[0].nodes.push(new TreeNode(tree, "one", "one-one-twos"));
+			   tree.nodes[0].nodes.push(new TreeNode(tree, "one", "one-two"));
+			   tree.nodes[0].nodes[1].nodes.push(new TreeNode(tree, "one", "one-two-one"));
+			   
+			   
+			   tree.nodes.push(new TreeNode(tree, "one", "two"));
+			   tree.nodes[1].nodes.push(new TreeNode(tree, "one", "two-one"));
+			   tree.nodes[1].nodes.push(new TreeNode(tree, "one", "two-two"));
+			  
+			   tree.endUpdate();
+			   addChild(tree);
+			   
+			  
+			   
 		}
+		
+	
 	
 	}
 

@@ -11,13 +11,15 @@ package components.treeview
 		//node events
 		public static var NODE_ADJUST:String = "NODE_ADJUST";
 		public static var NODE_SELECT:String = "NODE_SELECT";
-		//public static var NODE_CLOSE:String =  "NODE_CLOSE";
+		public static var BREADCRUMB:String =  "GET_PATH";
 		
-		private var _depth:int;
-		private var _index:int;
-		private var _startY:int;
-		private var _subNodes:int;
+		//private var _depth:int;
+		//private var _index:int;
+		//private var _startY:int;
+		//private var _subNodes:int;
 		private var _node:TreeNode;
+		private var _adjustmentHeight:Number;
+		private var _path:String;
 		
 		public function TreeEvent(type:String, bubbles:Boolean = false, cancelable:Boolean = false)
 		{
@@ -35,54 +37,34 @@ package components.treeview
 			return formatToString("TreeEvent", "type", "bubbles", "cancelable", "eventPhase");
 		}
 		
-		public function get index():int 
-		{
-			return _index;
-		}
-		
-		public function set index(value:int):void 
-		{
-			_index = value;
-		}
-		
-		public function get depth():int 
-		{
-			return _depth;
-		}
-		
-		public function set depth(value:int):void 
-		{
-			_depth = value;
-		}
-		
-		public function get node():TreeNode 
+		public function get node():TreeNode
 		{
 			return _node;
 		}
 		
-		public function set node(value:TreeNode):void 
+		public function set node(value:TreeNode):void
 		{
 			_node = value;
 		}
 		
-		public function get startY():int 
+		public function get adjustmentHeight():Number
 		{
-			return _startY;
+			return _adjustmentHeight;
 		}
 		
-		public function set startY(value:int):void 
+		public function set adjustmentHeight(value:Number):void
 		{
-			_startY = value;
+			_adjustmentHeight = value;
 		}
 		
-		public function get subNodes():int 
+		public function get path():String 
 		{
-			return _subNodes;
+			return _path;
 		}
 		
-		public function set subNodes(value:int):void 
+		public function set path(value:String):void 
 		{
-			_subNodes = value;
+			_path = value;
 		}
 	
 	}
