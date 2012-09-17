@@ -24,13 +24,13 @@ package components.treeview
 		private var _useTween:Boolean;
 		private var _autoCollapseWhenNotViewed:Boolean;
 		
-		private var _nodes:Vector.<TreeNode> //root Node
+		private var _nodes:TreeNodeList //root Node
 		
 		//private var _isUpdating:Boolean;
 		
 		public function TreeViewComponent()
 		{
-			_nodes = new Vector.<TreeNode>();
+			_nodes = new TreeNodeList();
 			
 			_startX = 50;
 			_startY = 50;
@@ -40,144 +40,87 @@ package components.treeview
 			
 			_horizontalIndent = 10;
 			_verticalIndent = 3;
-			autoCollapseWhenNotViewed = false;
+			_autoCollapseWhenNotViewed = false;
 			//_nodes.
 			//this._isUpdating = false;
 		}
 		
 		private function drawRootNodes():void
 		{
+			
 			var y:Number = _startY;
-			for (var i:int = 0; i < _nodes.length; i++, y += 30)
+			for (var i:int = 0; i < nodes.nodes.length; i++, y += 30)
 			{
 				
-				_nodes[i].initializeDepth(0);
-				_nodes[i].x = startX
-				_nodes[i].y = y;
-				_nodes[i].draw();
-				//_nodes[i].isExpanded=false;
-				
-				//_nodes[i].addEventListener(MouseEvent.CLICK, nodeClick, false, 0, true);
-				//_nodes[i].addEventListener(MouseEvent.CLICK, nodeClick, false, 0, true);
-				//_nodes[i].addEventListener(TreeEvent.NODE_SELECT, nodeClick, true, 0, true);
-				_nodes[i].addEventListener(TreeEvent.NODE_ADJUST, adjustHeight, false, 0, true);
-				this.addChild(_nodes[i]);
+				nodes.nodes[i].initializeDepth(0);
+				nodes.nodes[i].x = startX
+				nodes.nodes[i].y = y;
+				nodes.nodes[i].draw();
+				nodes.nodes[i].addEventListener(TreeEvent.NODE_ADJUST, adjustHeight, false, 0, true);
+				this.nodes.addChild(nodes.nodes[i]);
 			}
+			addChild(this.nodes);
 		}
 		
-		public function clear():void
+		internal function nodeClose(treenode:TreeNode):void
 		{
-			while (_nodes.length > 0)
-			{
-				var node:TreeNode = _nodes.pop();
-				node.clear();
-			}
-			
-			removeChild(this);
-		}
-		
-		public function nodeClick(e:TreeEvent):void
-		{
-			nodeClose(e.node);
-			//adjustHeight(e.node);
-		/*	var path:String = "";
-			var boolPath:Boolean = true;
-			
-			var i:int = 0;
-			
-			var tree:Vector.<TreeNode> = this.nodes;
-			
-			while (boolPath)
-			{
-				
-				if (tree[i].containsNode(e.node))
-				{
-					path += tree[i].name;
-					if (tree[i].equals(e.node))
-					{
-						boolPath = false;
-						
-					}
-					else
-					{
-						tree = tree[i].nodes;
-						i = -1;
-					}
-				}
-				i++;
-			}
-			var event:TreeEvent = new TreeEvent(TreeEvent.BREADCRUMB, false, false);
-			event.path = path;
-			
-			dispatchEvent(event);*/
-		}
-		
-		public function nodeClose(node:TreeNode):void
-		{
+			//trace("close!");
 			for (var i:int = 0; i < this.nodes.length; i++)
 			{
-				//if(!hasPassed){
-				if (!this.nodes[i].containsNode(node))
+				var node:TreeNode = this.nodes.nodes[i];
+				
+				if (!node.containsNode(treenode))
 				{
-					trace("adjustheight -----------------");
-					trace("adjustheight @" + this.nodes[i].depth);
-					if (nodes[i].isExpanded)
-					{
-						var f:TreeEvent = new TreeEvent(TreeEvent.NODE_ADJUST, true);
-						f.node = this.nodes[i];
-						f.adjustmentHeight = nodes[i].nodes.length * 30 * -1;
+
 						
-						this.nodes[i].dispatchEvent(f);
-						trace("dispatch");
+					
+					//create adjust treeEvent
+					
+					if (node.isExpanded)
+					{	
+						node.removeNodes();
+						var e:TreeEvent = new TreeEvent(TreeEvent.NODE_ADJUST, true);
+						e.node = node;
+						e.boundHeight =node.getBoundHeight();
+						node.dispatchEvent(e);
 						
-						if (nodes[i].hasNodes)
-							nodes[i].nodeUncollapse(node);
+						
+						/**/
 					}
-					
-					nodes[i].removeNodes();
-					
 				}
 				else
 				{
-					nodes[i].nodeUncollapse(node);
+					//if (!node.equals(treenode))
+					node.nodeClose(treenode);
+					
 				}
 				
 			}
 		}
 		
-		public function adjustHeight(e:TreeEvent):void
+		internal function adjustHeight(e:TreeEvent):void
 		{
-			trace("adjustHeight sa root");
-			var target:TreeNode = e.target as TreeNode;
-			var curTarget:TreeNode = e.currentTarget as TreeNode;
-			trace("@depth :" + e.node.depth)
-			trace("target :" + target.name);
-			trace("ctarget :" + curTarget.name);
-			trace("end");
 			
-			var hasPassed:Boolean = false;
+			//trace("adjust height sa root");
+			var target:TreeNode = e.target as TreeNode;
+			var stop:Boolean = false;
+			//trace(target.name);
+			trace(e.boundHeight);
+			
 			for (var i:int = this.nodes.length - 1; i >= 0; i--)
 			{
-				if (!nodes[i].equals(target) && !nodes[i].containsNode(target) && !hasPassed)
+				if (this.nodes.nodes[i].equals(target) || (!this.nodes.nodes[i].equals(target) && this.nodes.nodes[i].containsNode(target)))
 				{
-					if (this.nodes[i].button != null)
-					{
-						
-						//this.nodes[i].button.y += e.adjustmentHeight;
-						//var tween:Tweener = new Tweener();
-					
-						//tween.moveTween(this.nodes[i].button, this.nodes[i].button.y + e.adjustmentHeight, 10);
-						//new Tweener().moveTween(this.nodes[i].button, this.nodes[i].button.y + e.adjustmentHeight, 10);
-						this.nodes[i].button.y += e.adjustmentHeight;
-						//this.nodes[i].button.y
-						this.nodes[i].adjustSubNodes(e.adjustmentHeight);
-					}
+					stop = true;
 				}
 				
-				if (this.nodes[i].equals(target) || this.nodes[i].containsNode(target))
-					hasPassed = true;
-				
+				if (!stop)
+				{
+					//adjust
+					this.nodes.nodes[i].adjustAllSubNodes(e.boundHeight);
+				}
 			}
+		
 		}
 		
 		public function beginUpdate():void
@@ -187,22 +130,13 @@ package components.treeview
 		
 		public function endUpdate():void
 		{
-			//var e:TreeEvent = new TreeEvent(e.END_UPDATE, false, true);
-			//e.isUpdating = false;
-			//this._isUpdating = false;
-			//dispatchEvent(e);
-			//initializeDepthAndIndeces();
+			
 			drawRootNodes();
 		}
 		
-		public function get nodes():Vector.<TreeNode>
+		public function clear():void
 		{
-			return _nodes;
-		}
 		
-		public function set nodes(value:Vector.<TreeNode>):void
-		{
-			_nodes = value;
 		}
 		
 		public function get startX():Number
@@ -254,7 +188,16 @@ package components.treeview
 		{
 			_autoCollapseWhenNotViewed = value;
 		}
+		
+		public function get nodes():TreeNodeList
+		{
+			return _nodes;
+		}
+		
+		public function set nodes(value:TreeNodeList):void
+		{
+			_nodes = value;
+		}
 	
 	}
-
 }

@@ -18,7 +18,7 @@ package components.treeview
 		//private var _startY:int;
 		//private var _subNodes:int;
 		private var _node:TreeNode;
-		private var _adjustmentHeight:Number;
+		private var _boundHeight:Number;
 		private var _path:String;
 		
 		public function TreeEvent(type:String, bubbles:Boolean = false, cancelable:Boolean = false)
@@ -47,14 +47,14 @@ package components.treeview
 			_node = value;
 		}
 		
-		public function get adjustmentHeight():Number
+		public function get boundHeight():Number
 		{
-			return _adjustmentHeight;
+			return _boundHeight;
 		}
 		
-		public function set adjustmentHeight(value:Number):void
+		public function set boundHeight(value:Number):void
 		{
-			_adjustmentHeight = value;
+			_boundHeight = value;
 		}
 		
 		public function get path():String 
