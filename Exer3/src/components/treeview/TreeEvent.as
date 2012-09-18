@@ -11,7 +11,7 @@ package components.treeview
 		//node events
 		public static var NODE_ADJUST:String = "NODE_ADJUST";
 		public static var NODE_SELECT:String = "NODE_SELECT";
-		public static var BREADCRUMB:String =  "GET_PATH";
+		public static var BREADCRUMB:String = "GET_PATH";
 		
 		//private var _depth:int;
 		//private var _index:int;
@@ -57,12 +57,12 @@ package components.treeview
 			_boundHeight = value;
 		}
 		
-		public function get path():String 
+		public function get path():String
 		{
 			return _path;
 		}
 		
-		public function set path(value:String):void 
+		public function set path(value:String):void
 		{
 			_path = value;
 		}

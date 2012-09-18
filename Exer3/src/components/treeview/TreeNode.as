@@ -12,7 +12,8 @@ package components.treeview
 	 */
 	public class TreeNode extends Sprite
 	{
-		private var _nodes:TreeNodeList;
+		private var _nodes:Vector.<TreeNode>;
+		private var _nodeContainerSprite:Sprite;
 		private var _depth:int;
 		private var _id:String;
 		private var _name:String;
@@ -27,10 +28,12 @@ package components.treeview
 			this._id = id;
 			this._name = name;
 			
-			this.nodes = new TreeNodeList();
+			this.nodes = new Vector.<TreeNode>();
 			this.treeViewComponent = new TreeViewComponent();
 			this.treeViewComponent = ref;
-			addChild(this.nodes);
+			
+			this.nodeContainerSprite = new Sprite();
+			addChild(this._nodeContainerSprite);
 		}
 		
 		public function clear():void
@@ -112,14 +115,24 @@ package components.treeview
 			_button = value;
 		}
 		
-		public function get nodes():TreeNodeList
+		public function get nodes():Vector.<TreeNode>
 		{
 			return _nodes;
 		}
 		
-		public function set nodes(value:TreeNodeList):void
+		public function set nodes(value:Vector.<TreeNode>):void
 		{
 			_nodes = value;
+		}
+		
+		public function get nodeContainerSprite():Sprite
+		{
+			return _nodeContainerSprite;
+		}
+		
+		public function set nodeContainerSprite(value:Sprite):void
+		{
+			_nodeContainerSprite = value;
 		}
 		
 		public function getBoundHeight():Number
@@ -127,45 +140,37 @@ package components.treeview
 			return isExpanded ? (this.height - this.button.height) : (-1 * this.nodes.length * this.height);
 		}
 		
-		
-		
 		public function draw():void
 		{
-			
+			trace("draw");
 			this.button = new Button(this.name, this.hasNodes);
-			this.nodes.y = this.button.y + this.button.height;
-			var x:Number = this.button.x + ((this.depth+1) * treeViewComponent.horizontalIndent);
-			this.nodes.x = x;
+			
+			var x:Number = this.button.x + ((this.depth + 1) * treeViewComponent.horizontalIndent);
+			nodeContainerSprite.y = this.button.y + this.button.height;
+			nodeContainerSprite.x = x;
 			this.addEventListener(MouseEvent.CLICK, nodeClick, false, 0, true);
-			//this.addEventListener(TreeEvent.NODE_SELECT, this.treeViewComponent.nodeClick, false, 0, true);
 			
 			this.addChild(this.button);
 			
-			//if (this.treeViewComponent.autoCollapseWhenNotViewed)
-			//	this.createNodes();
-			
-			
-			this.nodes.createNodes();
-			if (!this.treeViewComponent.autoCollapseWhenNotViewed)//{
-				removeNodes();
-				
-			//}else
-			//	this.treeViewComponent.adjustHeight(this);
+			this.createSubNodes();
+			if (!this.treeViewComponent.autoCollapseWhenNotViewed) //{
+				this.removeNodes();
+		
 		}
 		
 		public function createNodes():void
 		{
-			this.isExpanded=true;
-			addChild(this.nodes);
+			this.isExpanded = true;
+			addChild(nodeContainerSprite);
 		}
 		
 		public function removeNodes():void
 		{
-			this.isExpanded=false;
+			this.isExpanded = false;
 			//if(this.nodes.isCreated)
-				removeChild(this.nodes);
+			removeChild(nodeContainerSprite);
 			//else
-				
+		
 		}
 		
 		public function nodeClick(event:Event):void
@@ -173,10 +178,8 @@ package components.treeview
 			
 			event.stopPropagation();
 			
-			
-			
 			if (this.hasNodes)
-			{	
+			{
 				
 				if (this.isExpanded)
 				{
@@ -189,26 +192,85 @@ package components.treeview
 				else
 				{
 					this.button.toggleLabel(false);
-					this.nodes.y += 30;
-					new Tweener().moveTween(this.nodes, this.nodes.y - 30, 5);
+					this.nodeContainerSprite.y += 30;
+					new Tweener().moveTween(nodeContainerSprite, this.nodeContainerSprite.y - 30, 5);
 					this.createNodes();
 				}
 			}
 			
-			
 			this.treeViewComponent.closeNodes(this);
-			this.treeViewComponent.adjustHeight(this);//close the open nodes;
-			/*/this.treeViewComponent.adjustHeight(this); //close the open nodes;
-			//trace("----------------------------------");
-			/*var e:TreeEvent = new TreeEvent(TreeEvent.NODE_ADJUST, true);
-			e.node = this;
-			e.boundHeight = this.getBoundHeight();
-			dispatchEvent(e);*/
-			//trace(getBoundHeight());
-			//trace(this.nodes.height);
+			this.treeViewComponent.adjustHeight(this);
+		
 		}
 		
+		public function createSubNodes():void
+		{
+			var y:Number = 0;
+			var x:Number = 0;
+			
+			for (var i:int = 0; i < this.nodes.length; i++, y += 30)
+			{
+				this.nodes[i].y = y;
+				this.nodes[i].x = x;
+				this.nodes[i].draw();
+				
+				nodeContainerSprite.addChild(this.nodes[i]);
+			}
+		}
 		
+		public function closeNodes(node:TreeNode):void
+		{
+			trace("close");
+			for (var i:int = 0; i < this.nodes.length; i++)
+			{
+				if (this.nodes[i].isExpanded)
+				{
+					if (!this.nodes[i].containsNode(node))
+					{
+						
+						this.nodes[i].button.toggleLabel(this.nodes[i].nodes.length == 0 ? false : true);
+						
+						this.nodes[i].removeNodes();
+						this.treeViewComponent.adjustHeight(this.nodes[i]);
+					}
+					else
+					{
+						if (!this.nodes[i].equals(node))
+							this.nodes[i].closeNodes(node);
+					}
+					
+				}
+				
+			}
+		
+		}
+		
+		internal function adjustHeight(node:TreeNode):void
+		{
+			
+			var hasPassed:Boolean = false
+			for (var i:int = 0; i < this.nodes.length; i++)
+			{
+				if (hasPassed && !this.nodes[i].equals(node) && !this.nodes[i].containsNode(node))
+				{
+					
+					var height:Number = node.isExpanded ? node.nodeContainerSprite.height : node.nodeContainerSprite.height * -1;
+					this.nodes[i].y += height;
+					
+				}
+				if (this.nodes[i].containsNode(node))
+				{
+					
+					hasPassed = true;
+					
+					if (!this.nodes[i].equals(node))
+						this.nodes[i].adjustHeight(node);
+					
+				}
+				
+			}
+		
+		}
 		
 		public function equals(t:TreeNode):Boolean
 		{
@@ -223,7 +285,7 @@ package components.treeview
 			{
 				for (var i:int = 0; i < this.nodes.length; i++)
 				{
-					flag = flag || this.nodes.nodes[i].containsNode(t);
+					flag = flag || this.nodes[i].containsNode(t);
 					
 					if (flag)
 					{
@@ -234,11 +296,18 @@ package components.treeview
 			return flag;
 		}
 		
-		
-		
-		
+		public function initializeDepth(depth:Number):void
+		{
+			this.depth = depth;
+			for (var i:int = 0; i < this.nodes.length; i++)
+			{
+				this.nodes[i].depth = depth;
+				this.nodes[i].isExpanded = !(false || this.nodes[i].nodes.length == 0);
+				if (this.nodes[i].hasNodes)
+					this.nodes[i].initializeDepth(depth + 1);
+			}
+		}
 	
-		
 	}
 
 }

@@ -23,6 +23,7 @@ package components.treeview
 		private var _mc:MovieClip;
 		private var _bgWhite:Shape;
 		private var _tf:TextFormat;
+		
 		public function Button(val:String, hasNodes:Boolean = false)
 		{
 			
@@ -39,12 +40,12 @@ package components.treeview
 			_bgWhite.graphics.drawRect(0, 0, 300, 30);
 			_bgWhite.graphics.endFill();
 			
-			var bgBlue:Sprite = new Sprite(); 
-			bgBlue.graphics.beginFill(0x62AAF2,.1);
-			bgBlue.graphics.drawRect(0,0, 300, 30);
+			var bgBlue:Sprite = new Sprite();
+			bgBlue.graphics.beginFill(0x62AAF2, .1);
+			bgBlue.graphics.drawRect(0, 0, 300, 30);
 			bgBlue.graphics.endFill();
 			
-			_tf= new TextFormat();
+			_tf = new TextFormat();
 			_tf.color = 0x555555;
 			_tf.font = "Verdana";
 			_tf.size = 17;
@@ -52,20 +53,19 @@ package components.treeview
 			_tf.leftMargin = 5;
 			
 			_txt = new TextField();
-			_txt.text = (hasNodes?"+":"-") +" "+this.label+"";
+			_txt.text = (hasNodes ? "+" : "-") + " " + this.label + "";
 			_txt.x = 0;
 			_txt.y = 0;
 			_txt.width = _bgWhite.width;
 			_txt.height = _bgWhite.height;
 			_txt.setTextFormat(_tf);
-			_txt.autoSize =TextFieldAutoSize.LEFT;
+			_txt.autoSize = TextFieldAutoSize.LEFT;
 			
 			_mc = new MovieClip();
 			_mc.addChild(_bgWhite);
 			_mc.addChild(_txt);
-			_mc.x =0;
+			_mc.x = 0;
 			_mc.y = 0;
-			
 			
 			var btn:SimpleButton = new SimpleButton();
 			btn.upState = _mc;
@@ -74,9 +74,8 @@ package components.treeview
 			btn.downState = btn.upState;
 			btn.hitTestState = btn.upState;
 			
-			addChild(btn);	
+			addChild(btn);
 		}
-		
 		
 		public function get label():String
 		{
@@ -98,11 +97,12 @@ package components.treeview
 			_hasNodes = value;
 		}
 		
-		public function toggleLabel(expand:Boolean):void {
+		public function toggleLabel(expand:Boolean):void
+		{
 			
 			//_mc.removeChild(_txt);
 			
-			_txt.text = (expand?"+":"-") +" "+this.label+"";
+			_txt.text = (expand ? "+" : "-") + " " + this.label + "";
 			_txt.x = 0;
 			_txt.y = 0;
 			_txt.width = _bgWhite.width;

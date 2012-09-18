@@ -5,7 +5,7 @@ package
 	import components.treeview.TreeViewComponent;
 	import components.treeview.TreeEvent;
 	import flash.text.StaticText;
-
+	
 	import flash.display.SimpleButton;
 	import flash.display.Sprite;
 	import flash.text.TextFormat;
@@ -14,7 +14,6 @@ package
 	import flash.display.Sprite;
 	import flash.display.MovieClip;
 	import flash.events.Event;
-	
 	
 	/**
 	 * ...
@@ -36,39 +35,33 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
+			var tree:TreeViewComponent = new TreeViewComponent();
 			
-			   var tree:TreeViewComponent = new TreeViewComponent();
-				
+			tree.nodes.push(new TreeNode(tree, "one", "one")); //depth 0
 			
-			  
-			   tree.nodes.push(new TreeNode(tree, "one", "one")); //depth 0
-			   
+			tree.nodes[0].nodes.push(new TreeNode(tree, "one", "one-one")); //depth 1
+			tree.nodes[0].nodes[0].nodes.push(new TreeNode(tree, "one", "one-one-one")); //depth 2
+			tree.nodes[0].nodes[0].nodes.push(new TreeNode(tree, "one", "one-one-two")); //depth 2
 			
-			  tree.nodes.nodes[0].nodes.push(new TreeNode(tree, "one", "one-one")); //depth 1
-			   tree.nodes.nodes[0].nodes.nodes[0].nodes.push(new TreeNode(tree, "one", "one-one-one")); //depth 2
-			   tree.nodes.nodes[0].nodes.nodes[0].nodes.push(new TreeNode(tree, "one", "one-one-two"));//depth 2
-			   
-			   tree.nodes.nodes[0].nodes.push(new TreeNode(tree, "one", "one-two")); //depth 1
-			   tree.nodes.nodes[0].nodes.nodes[1].nodes.push(new TreeNode(tree, "one", "one-two-one")); //depth 2
-			   tree.nodes.nodes[0].nodes.nodes[1].nodes.push(new TreeNode(tree, "one", "one-two-two"));//depth 2
+			tree.nodes[0].nodes[0].nodes[0].nodes.push(new TreeNode(tree, "one", "one-one-one-one")); //depth 2
+			tree.nodes[0].nodes[0].nodes[1].nodes.push(new TreeNode(tree, "one", "one-one-one-two")); //depth 2
 			
-			   
-			   tree.nodes.push(new TreeNode(tree, "one", "two"));//depth 1
-			   tree.nodes.nodes[1].nodes.push(new TreeNode(tree, "one", "two-one"));//depth 2
-			   tree.nodes.nodes[1].nodes.push(new TreeNode(tree, "one", "two-two"));//depth 2
-			   
-			   tree.nodes.push(new TreeNode(tree, "one", "three"));//depth 1
-			   tree.nodes.nodes[2].nodes.push(new TreeNode(tree, "one", "three-one"));//depth 2
-			   tree.nodes.nodes[2].nodes.push(new TreeNode(tree, "one", "three-two"));//depth 2
-			  
-			   tree.endUpdate();
-			   addChild(tree);
-			   
-			  
-			   
-		}
+			tree.nodes[0].nodes.push(new TreeNode(tree, "one", "one-two")); //depth 1
+			tree.nodes[0].nodes[1].nodes.push(new TreeNode(tree, "one", "one-two-one")); //depth 2
+			tree.nodes[0].nodes[1].nodes.push(new TreeNode(tree, "one", "one-two-two")); //depth 2
+			
+			tree.nodes.push(new TreeNode(tree, "one", "two")); //depth 1
+			tree.nodes[1].nodes.push(new TreeNode(tree, "one", "two-one")); //depth 2
+			tree.nodes[1].nodes.push(new TreeNode(tree, "one", "two-two")); //depth 2
+			
+			/* tree.nodes.push(new TreeNode(tree, "one", "three"));//depth 1
+			   tree.nodes[2].nodes.push(new TreeNode(tree, "one", "three-one"));//depth 2
+			   tree.nodes[2].nodes.push(new TreeNode(tree, "one", "three-two"));//depth 2
+			 */
+			tree.endUpdate();
+			addChild(tree);
 		
-	
+		}
 	
 	}
 
