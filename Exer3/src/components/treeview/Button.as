@@ -19,7 +19,10 @@ package components.treeview
 	{
 		private var _label:String;
 		private var _hasNodes:Boolean;
-		
+		private var _txt:TextField;
+		private var _mc:MovieClip;
+		private var _bgWhite:Shape;
+		private var _tf:TextFormat;
 		public function Button(val:String, hasNodes:Boolean = false)
 		{
 			
@@ -31,41 +34,41 @@ package components.treeview
 		
 		public function draw():void
 		{
-			var bgWhite:Shape = new Shape()
-			bgWhite.graphics.beginFill(0xFFFFFF);
-			bgWhite.graphics.drawRect(0, 0, 300, 30);
-			bgWhite.graphics.endFill();
+			_bgWhite = new Shape()
+			_bgWhite.graphics.beginFill(0xFFFFFF);
+			_bgWhite.graphics.drawRect(0, 0, 300, 30);
+			_bgWhite.graphics.endFill();
 			
 			var bgBlue:Sprite = new Sprite(); 
 			bgBlue.graphics.beginFill(0x62AAF2,.1);
 			bgBlue.graphics.drawRect(0,0, 300, 30);
 			bgBlue.graphics.endFill();
 			
-			var tf:TextFormat = new TextFormat();
-			tf.color = 0x555555;
-			tf.font = "Verdana";
-			tf.size = 17;
-			tf.align = "left";
-			tf.leftMargin = 5;
+			_tf= new TextFormat();
+			_tf.color = 0x555555;
+			_tf.font = "Verdana";
+			_tf.size = 17;
+			_tf.align = "left";
+			_tf.leftMargin = 5;
 			
-			var txt:TextField = new TextField();
-			txt.text = (hasNodes?"+":"-") +" "+this.label+"";
-			txt.x = 0;
-			txt.y = 0;
-			txt.width = bgWhite.width;
-			txt.height = bgWhite.height;
-			txt.setTextFormat(tf);
-			txt.autoSize =TextFieldAutoSize.LEFT;
+			_txt = new TextField();
+			_txt.text = (hasNodes?"+":"-") +" "+this.label+"";
+			_txt.x = 0;
+			_txt.y = 0;
+			_txt.width = _bgWhite.width;
+			_txt.height = _bgWhite.height;
+			_txt.setTextFormat(_tf);
+			_txt.autoSize =TextFieldAutoSize.LEFT;
 			
-			var mc:MovieClip = new MovieClip();
-			mc.addChild(bgWhite);
-			mc.addChild(txt);
-			mc.x =0;
-			mc.y = 0;
+			_mc = new MovieClip();
+			_mc.addChild(_bgWhite);
+			_mc.addChild(_txt);
+			_mc.x =0;
+			_mc.y = 0;
 			
 			
 			var btn:SimpleButton = new SimpleButton();
-			btn.upState = mc;
+			btn.upState = _mc;
 			btn.overState = bgBlue;
 			
 			btn.downState = btn.upState;
@@ -94,7 +97,20 @@ package components.treeview
 		{
 			_hasNodes = value;
 		}
-	
+		
+		public function toggleLabel(expand:Boolean):void {
+			
+			//_mc.removeChild(_txt);
+			
+			_txt.text = (expand?"+":"-") +" "+this.label+"";
+			_txt.x = 0;
+			_txt.y = 0;
+			_txt.width = _bgWhite.width;
+			_txt.height = _bgWhite.height;
+			_txt.setTextFormat(_tf);
+			_txt.autoSize = TextFieldAutoSize.LEFT;
+			//_mc.addChild(_txt);
+		}
 	}
 
 }

@@ -46,15 +46,20 @@ package
 			
 			  tree.nodes.nodes[0].nodes.push(new TreeNode(tree, "one", "one-one")); //depth 1
 			   tree.nodes.nodes[0].nodes.nodes[0].nodes.push(new TreeNode(tree, "one", "one-one-one")); //depth 2
-			   tree.nodes.nodes[0].nodes.nodes[0].nodes.push(new TreeNode(tree, "one", "one-one-twos"));//depth 2
+			   tree.nodes.nodes[0].nodes.nodes[0].nodes.push(new TreeNode(tree, "one", "one-one-two"));//depth 2
 			   
 			   tree.nodes.nodes[0].nodes.push(new TreeNode(tree, "one", "one-two")); //depth 1
-			   tree.nodes.nodes[0].nodes.nodes[1].nodes.push(new TreeNode(tree, "one", "one-two-one"));//depth 2 
-			   
+			   tree.nodes.nodes[0].nodes.nodes[1].nodes.push(new TreeNode(tree, "one", "one-two-one")); //depth 2
+			   tree.nodes.nodes[0].nodes.nodes[1].nodes.push(new TreeNode(tree, "one", "one-two-two"));//depth 2
+			
 			   
 			   tree.nodes.push(new TreeNode(tree, "one", "two"));//depth 1
 			   tree.nodes.nodes[1].nodes.push(new TreeNode(tree, "one", "two-one"));//depth 2
 			   tree.nodes.nodes[1].nodes.push(new TreeNode(tree, "one", "two-two"));//depth 2
+			   
+			   tree.nodes.push(new TreeNode(tree, "one", "three"));//depth 1
+			   tree.nodes.nodes[2].nodes.push(new TreeNode(tree, "one", "three-one"));//depth 2
+			   tree.nodes.nodes[2].nodes.push(new TreeNode(tree, "one", "three-two"));//depth 2
 			  
 			   tree.endUpdate();
 			   addChild(tree);

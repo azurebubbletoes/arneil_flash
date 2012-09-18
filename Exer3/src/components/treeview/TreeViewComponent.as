@@ -30,10 +30,13 @@ package components.treeview
 		
 		public function TreeViewComponent()
 		{
-			_nodes = new TreeNodeList();
-			
 			_startX = 50;
 			_startY = 50;
+			
+			_nodes = new TreeNodeList();
+			addChild(this.nodes);
+			this.nodes.x = 50;
+			this.nodes.y = 50;
 			
 			//_maxWidth = 300;
 			//_maxHeight = 30;
@@ -48,79 +51,20 @@ package components.treeview
 		private function drawRootNodes():void
 		{
 			
-			var y:Number = _startY;
-			for (var i:int = 0; i < nodes.nodes.length; i++, y += 30)
-			{
-				
-				nodes.nodes[i].initializeDepth(0);
-				nodes.nodes[i].x = startX
-				nodes.nodes[i].y = y;
-				nodes.nodes[i].draw();
-				nodes.nodes[i].addEventListener(TreeEvent.NODE_ADJUST, adjustHeight, false, 0, true);
-				this.nodes.addChild(nodes.nodes[i]);
-			}
-			addChild(this.nodes);
+			this.nodes.initializeDepth(0);
+			this.nodes.createNodes();
+		
 		}
 		
-		internal function nodeClose(treenode:TreeNode):void
+		internal function closeNodes(node:TreeNode):void
 		{
-			//trace("close!");
-			for (var i:int = 0; i < this.nodes.length; i++)
-			{
-				var node:TreeNode = this.nodes.nodes[i];
-				
-				if (!node.containsNode(treenode))
-				{
-
-						
-					
-					//create adjust treeEvent
-					
-					if (node.isExpanded)
-					{	
-						node.removeNodes();
-						var e:TreeEvent = new TreeEvent(TreeEvent.NODE_ADJUST, true);
-						e.node = node;
-						e.boundHeight =node.getBoundHeight();
-						node.dispatchEvent(e);
-						
-						
-						/**/
-					}
-				}
-				else
-				{
-					//if (!node.equals(treenode))
-					node.nodeClose(treenode);
-					
-				}
-				
-			}
+			this.nodes.closeNodes(node);
 		}
 		
-		internal function adjustHeight(e:TreeEvent):void
-		{
-			
-			//trace("adjust height sa root");
-			var target:TreeNode = e.target as TreeNode;
-			var stop:Boolean = false;
-			//trace(target.name);
-			trace(e.boundHeight);
-			
-			for (var i:int = this.nodes.length - 1; i >= 0; i--)
-			{
-				if (this.nodes.nodes[i].equals(target) || (!this.nodes.nodes[i].equals(target) && this.nodes.nodes[i].containsNode(target)))
-				{
-					stop = true;
-				}
-				
-				if (!stop)
-				{
-					//adjust
-					this.nodes.nodes[i].adjustAllSubNodes(e.boundHeight);
-				}
-			}
-		
+		internal function adjustHeight(node:TreeNode,hasPassed:Boolean=false):void
+		{	
+			trace("starting height adjustment of node:"+node.name);
+			this.nodes.adjustHeight(node);
 		}
 		
 		public function beginUpdate():void
