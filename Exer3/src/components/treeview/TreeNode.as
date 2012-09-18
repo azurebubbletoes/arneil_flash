@@ -146,8 +146,11 @@ package components.treeview
 			
 			
 			this.nodes.createNodes();
-			if (!this.treeViewComponent.autoCollapseWhenNotViewed)
+			if (!this.treeViewComponent.autoCollapseWhenNotViewed)//{
 				removeNodes();
+				
+			//}else
+			//	this.treeViewComponent.adjustHeight(this);
 		}
 		
 		public function createNodes():void
@@ -179,11 +182,15 @@ package components.treeview
 				{
 					
 					this.button.toggleLabel(true);
+					
 					this.removeNodes();
+					
 				}
 				else
 				{
 					this.button.toggleLabel(false);
+					this.nodes.y += 30;
+					new Tweener().moveTween(this.nodes, this.nodes.y - 30, 5);
 					this.createNodes();
 				}
 			}

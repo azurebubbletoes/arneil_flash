@@ -33,6 +33,8 @@ package components.treeview
 				//this.nodes.nodes[i].addEventListener(TreeEvent.NODE_ADJUST, this.treeViewComponent.adjustHeight, false, 0, true);
 				addChild(this.nodes[i]);
 			}
+			//this.y -= 20;
+			//new Tweener().moveTween(this, this.y + 20, 10);
 		
 		}
 		
@@ -90,11 +92,15 @@ package components.treeview
 				if (hasPassed && !this.nodes[i].equals(node) && !this.nodes[i].containsNode(node)) {
 					trace("entering hasPassed..");
 					
+					//this.nodes[i].nodes.y += 20;
+					//new Tweener().moveTween(this.nodes[i].nodes, this.nodes[i].nodes.y - 20, 5);
+					
 					var height:Number=node.isExpanded?node.nodes.height:node.nodes.height * -1;
 					this.nodes[i].y += height;// node.isExpanded?height - height:height + height;
 					//this.nodes[i].y += node.isExpanded?node.nodes.height:node.nodes.height * -1;
 					
 					//new Tweener().moveTween(this.nodes[i], height, 10);
+					
 					
 					trace("node y:" + this.nodes[i].y);
 					trace("boundHeight: "+(node.isExpanded?node.nodes.height:node.nodes.height * -1) );
