@@ -20,61 +20,51 @@ package components.treeview
 		private var _label:String;
 		private var _hasNodes:Boolean;
 		private var _txt:TextField;
+		private var _txt2:TextField;
 		private var _mc:MovieClip;
+		private var _mc2:MovieClip;
 		private var _bgWhite:Shape;
 		private var _tf:TextFormat;
+		private var _tf2:TextFormat;
+		
+		private var _btn:SimpleButton;
 		
 		public function Button(val:String, hasNodes:Boolean = false)
 		{
 			
 			this.label = val;
 			this.hasNodes = hasNodes;
-			
+			initialize();
 			draw();
+		}
+		
+		private function initialize():void
+		{
+			
 		}
 		
 		public function draw():void
 		{
-			_bgWhite = new Shape()
-			_bgWhite.graphics.beginFill(0xFFFFFF);
-			_bgWhite.graphics.drawRect(0, 0, 300, 30);
-			_bgWhite.graphics.endFill();
+			_bgWhite = createShapeRect(0xFFFFFF);
+			_tf = createTextFormat(0x555555);
+			_tf2 = createTextFormat(0x0000FF);
 			
-			var bgBlue:Sprite = new Sprite();
-			bgBlue.graphics.beginFill(0x62AAF2, .1);
-			bgBlue.graphics.drawRect(0, 0, 300, 30);
-			bgBlue.graphics.endFill();
+			var name:String=(hasNodes ? "+" : "-") + " " + this.label + "";
+			_txt = createTextField(_tf,name);
+			_txt2 = createTextField(_tf2,name);
 			
-			_tf = new TextFormat();
-			_tf.color = 0x555555;
-			_tf.font = "Verdana";
-			_tf.size = 17;
-			_tf.align = "left";
-			_tf.leftMargin = 5;
 			
-			_txt = new TextField();
-			_txt.text = (hasNodes ? "+" : "-") + " " + this.label + "";
-			_txt.x = 0;
-			_txt.y = 0;
-			_txt.width = _bgWhite.width;
-			_txt.height = _bgWhite.height;
-			_txt.setTextFormat(_tf);
-			_txt.autoSize = TextFieldAutoSize.LEFT;
 			
-			_mc = new MovieClip();
-			_mc.addChild(_bgWhite);
-			_mc.addChild(_txt);
-			_mc.x = 0;
-			_mc.y = 0;
+			_mc = createMovieClip(_bgWhite, _txt);
+			_mc2 = createMovieClip(_bgWhite, _txt2);
 			
-			var btn:SimpleButton = new SimpleButton();
-			btn.upState = _mc;
-			btn.overState = bgBlue;
+			_btn = new SimpleButton();
 			
-			btn.downState = btn.upState;
-			btn.hitTestState = btn.upState;
+			_btn.upState = _mc;
+			_btn.overState = _mc2; 
+			_btn.hitTestState = _mc2; 
 			
-			addChild(btn);
+			addChild(_btn);
 		}
 		
 		public function get label():String
@@ -85,6 +75,49 @@ package components.treeview
 		public function set label(value:String):void
 		{
 			_label = value;
+		}
+		
+		public function createTextFormat(color:uint):TextFormat
+		{
+			var tf:TextFormat = new TextFormat();
+			tf.color = color
+			tf.font = "Verdana";
+			tf.size = 17;
+			tf.align = "left";
+			tf.leftMargin = 5;
+			return tf;
+		}
+		
+		public function createTextField(tf:TextFormat,text:String):TextField
+		{
+			var txt:TextField = new TextField();
+			txt.text = text; 
+			txt.x = 0;
+			txt.y = 0;
+			txt.width = _bgWhite.width;
+			txt.height = _bgWhite.height;
+			txt.setTextFormat(tf);
+			txt.autoSize = TextFieldAutoSize.LEFT;
+			return txt;
+		}
+		
+		public function createShapeRect(color:uint):Shape
+		{
+			var bg:Shape = new Shape();
+			bg.graphics.beginFill(color, .1);
+			bg.graphics.drawRect(0, 0, 300, 30);
+			bg.graphics.endFill();
+			return bg;
+		}
+		
+		public function createMovieClip(shapeBG:Shape, tf:TextField):MovieClip
+		{
+			var clip:MovieClip = new MovieClip();
+			clip.addChild(shapeBG);
+			clip.addChild(tf);
+			clip.x = 0;
+			clip.y = 0;
+			return clip;
 		}
 		
 		public function get hasNodes():Boolean
@@ -99,17 +132,14 @@ package components.treeview
 		
 		public function toggleLabel(expand:Boolean):void
 		{
+			var text:String = (expand ? "+" : "-") + " " + this.label + "";
+			_txt.text = text;
+			_txt2.text = text;
 			
-			//_mc.removeChild(_txt);
-			
-			_txt.text = (expand ? "+" : "-") + " " + this.label + "";
-			_txt.x = 0;
-			_txt.y = 0;
-			_txt.width = _bgWhite.width;
-			_txt.height = _bgWhite.height;
+			_txt.text = _txt2.text = text; 
 			_txt.setTextFormat(_tf);
-			_txt.autoSize = TextFieldAutoSize.LEFT;
-			//_mc.addChild(_txt);
+			_txt2.setTextFormat(_tf2);
+
 		}
 	}
 

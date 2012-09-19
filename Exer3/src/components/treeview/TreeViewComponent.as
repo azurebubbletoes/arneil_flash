@@ -16,32 +16,46 @@ package components.treeview
 		private var _startY:Number;
 		
 		private var _horizontalIndent:Number;
-		private var _verticalIndent:Number;
 		
 		private var _useTween:Boolean;
+		
+		private var _tweenEasing:Number;
 		private var _autoCollapseWhenNotViewed:Boolean;
 		
 		private var _nodes:Vector.<TreeNode>;
 		private var _nodeContainerSprite:Sprite;
 		
-		//private var _isUpdating:Boolean;
+		private var _leafNodeAlwaysOpen:Boolean;
+		private var _leafToOpen:int;
 		
 		public function TreeViewComponent()
 		{
+			
+			initialize();
+		}
+		
+		private function initialize():void
+		{
+			//-------------------
+			_autoCollapseWhenNotViewed = false;
+			_leafNodeAlwaysOpen = false;
+			_leafToOpen = 0; //default opened leaf if  leafNodeAlwaysOpen
+			
+			
 			_startX = 50;
 			_startY = 50;
+			_horizontalIndent = 10;
+			
+			_tweenEasing = 15;
 			
 			_nodeContainerSprite = new Sprite();
-			addChild(_nodeContainerSprite);
 			_nodes = new Vector.<TreeNode>();
 			
-			_horizontalIndent = 10;
-			_verticalIndent = 3;
-			_autoCollapseWhenNotViewed = false;
+			addChild(_nodeContainerSprite);
 		
 		}
 		
-		private function drawRootNodes():void
+		public function draw():void
 		{
 			var y:Number = _startY;
 			for (var i:int = 0; i < _nodes.length; i++, y += 30)
@@ -49,10 +63,13 @@ package components.treeview
 				this.nodes[i].initializeDepth(0);
 				this.nodes[i].x = _startX;
 				this.nodes[i].y = y;
-				this.nodes[i].draw();
+				this.nodes[i].drawButton();
+				
 				_nodeContainerSprite.addChild(this.nodes[i]);
+				
 			}
-		
+			if (this.leafNodeAlwaysOpen)
+				openLeaf();
 		}
 		
 		internal function closeNodes(node:TreeNode):void
@@ -65,10 +82,16 @@ package components.treeview
 					if (!this.nodes[i].containsNode(node))
 					{
 						
-						this.nodes[i].button.toggleLabel(this.nodes[i].nodes.length == 0 ? false : true);
+						if (!(node.nodes.length == 0 && this.nodes[i].depth == node.depth) && autoCollapseWhenNotViewed) // && (!_leafNodeAlwaysOpen || (leafNodeAlwaysOpen && !isLeaf(nodes[i]))))) // previous node wont close when wlay subnodes and chosen nodes
+						{
+							if (!this.isLeaf(nodes[i]))
+							{
+								this.nodes[i].button.toggleLabel(this.nodes[i].nodes.length == 0 ? false : true);
+								this.nodes[i].removeNodes();
+								adjustHeight(this.nodes[i]);
+							}
+						}
 						
-						this.nodes[i].removeNodes();
-						adjustHeight(this.nodes[i]);
 					}
 					else
 					{
@@ -77,6 +100,7 @@ package components.treeview
 					}
 					
 				}
+					//}
 				
 			}
 		}
@@ -108,6 +132,54 @@ package components.treeview
 		
 		}
 		
+		internal function isLeaf(node:TreeNode):Boolean
+		{
+			var isPath:Boolean = true;
+			
+			if (leafNodeAlwaysOpen)
+			{
+				var nodeVector:Vector.<TreeNode> = new Vector.<TreeNode>();
+				nodeVector = nodes;
+				while (isPath)
+				{
+					
+					if (nodeVector[leafToOpen].containsNode(node))
+					{
+						if (nodeVector[leafToOpen].equals(node))
+						{
+							isPath = false;
+							break;
+						}
+						else
+						{
+							nodeVector = nodeVector[leafToOpen].nodes;
+							
+						}
+					}
+					else
+						break;
+					
+				}
+			}
+			
+			return !isPath;
+		}
+		
+		internal function openLeaf():void
+		{
+			var isPath:Boolean = true;
+			var nodeVector:Vector.<TreeNode> = nodes;
+			while (nodeVector[leafToOpen].hasNodes)
+			{
+				//trace("node to open: " + nodeVector[leafToOpen].name)
+				var e:Event = new Event(MouseEvent.CLICK, false, true);
+				nodeVector[leafToOpen].dispatchEvent(e);
+				nodeVector[leafToOpen].removeEventListener(MouseEvent.CLICK, nodeVector[leafToOpen].nodeClick, false);
+				nodeVector = nodeVector[leafToOpen].nodes;
+			}
+		
+		}
+		
 		public function beginUpdate():void
 		{
 		
@@ -116,7 +188,7 @@ package components.treeview
 		public function endUpdate():void
 		{
 			
-			drawRootNodes();
+			draw();
 		}
 		
 		public function clear():void
@@ -154,16 +226,6 @@ package components.treeview
 			_horizontalIndent = value;
 		}
 		
-		public function get verticalIndent():Number
-		{
-			return _verticalIndent;
-		}
-		
-		public function set verticalIndent(value:Number):void
-		{
-			_verticalIndent = value;
-		}
-		
 		public function get autoCollapseWhenNotViewed():Boolean
 		{
 			return _autoCollapseWhenNotViewed;
@@ -182,6 +244,26 @@ package components.treeview
 		public function set nodes(value:Vector.<TreeNode>):void
 		{
 			_nodes = value;
+		}
+		
+		public function get leafNodeAlwaysOpen():Boolean
+		{
+			return _leafNodeAlwaysOpen;
+		}
+		
+		public function set leafNodeAlwaysOpen(value:Boolean):void
+		{
+			_leafNodeAlwaysOpen = value;
+		}
+		
+		public function get leafToOpen():int
+		{
+			return _leafToOpen;
+		}
+		
+		public function set leafToOpen(value:int):void
+		{
+			_leafToOpen = value;
 		}
 	
 	}

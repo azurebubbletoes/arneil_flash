@@ -6,6 +6,7 @@ package components.treeview
 	import flash.events.MouseEvent;
 	import flash.events.Event;
 	
+	import com.gskinner.motion.GTween;
 	/**
 	 * ...
 	 * @author arneil mercado
@@ -19,20 +20,23 @@ package components.treeview
 		private var _name:String;
 		private var _button:Button;
 		private var _treeViewComponent:TreeViewComponent;
-		private var _nodeIndex:int;
+	
 		private var _isExpanded:Boolean;
 		
 		public function TreeNode(ref:TreeViewComponent, id:String, name:String)
 		{
-			
 			this._id = id;
 			this._name = name;
-			
-			this.nodes = new Vector.<TreeNode>();
-			this.treeViewComponent = new TreeViewComponent();
 			this.treeViewComponent = ref;
 			
+			initialize();
+		}
+		
+		private function initialize():void
+		{
+			this.nodes = new Vector.<TreeNode>();
 			this.nodeContainerSprite = new Sprite();
+			
 			addChild(this._nodeContainerSprite);
 		}
 		
@@ -80,15 +84,7 @@ package components.treeview
 			_depth = value;
 		}
 		
-		public function get nodeIndex():int
-		{
-			return _nodeIndex;
-		}
-		
-		public function set nodeIndex(value:int):void
-		{
-			_nodeIndex = value;
-		}
+	
 		
 		public function get isExpanded():Boolean
 		{
@@ -135,41 +131,39 @@ package components.treeview
 			_nodeContainerSprite = value;
 		}
 		
-		public function getBoundHeight():Number
-		{
-			return isExpanded ? (this.height - this.button.height) : (-1 * this.nodes.length * this.height);
-		}
-		
 		public function draw():void
 		{
-			trace("draw");
-			this.button = new Button(this.name, this.hasNodes);
-			
 			var x:Number = this.button.x + ((this.depth + 1) * treeViewComponent.horizontalIndent);
 			nodeContainerSprite.y = this.button.y + this.button.height;
 			nodeContainerSprite.x = x;
+		}
+		
+		public function drawButton():void
+		{
+			this.button = new Button(this.name, this.hasNodes);
 			this.addEventListener(MouseEvent.CLICK, nodeClick, false, 0, true);
 			
 			this.addChild(this.button);
+			draw();
 			
 			this.createSubNodes();
-			if (!this.treeViewComponent.autoCollapseWhenNotViewed) //{
-				this.removeNodes();
+			this.removeNodes();
 		
 		}
 		
 		public function createNodes():void
 		{
+			
 			this.isExpanded = true;
 			addChild(nodeContainerSprite);
+		
 		}
 		
 		public function removeNodes():void
 		{
+			
 			this.isExpanded = false;
-			//if(this.nodes.isCreated)
 			removeChild(nodeContainerSprite);
-			//else
 		
 		}
 		
@@ -180,20 +174,18 @@ package components.treeview
 			
 			if (this.hasNodes)
 			{
-				
 				if (this.isExpanded)
 				{
-					
 					this.button.toggleLabel(true);
-					
 					this.removeNodes();
 					
 				}
 				else
 				{
 					this.button.toggleLabel(false);
-					this.nodeContainerSprite.y += 30;
-					new Tweener().moveTween(nodeContainerSprite, this.nodeContainerSprite.y - 30, 5);
+					this.nodeContainerSprite.y;// += 30;
+					//new Tweener().moveTween(nodeContainerSprite, this.nodeContainerSprite.y - 30, 5);
+					var myTween:GTween = new GTween(this.nodeContainerSprite,.4, {y:0}, {swapValues: true});
 					this.createNodes();
 				}
 			}
@@ -212,26 +204,37 @@ package components.treeview
 			{
 				this.nodes[i].y = y;
 				this.nodes[i].x = x;
-				this.nodes[i].draw();
+				
+				this.nodes[i].drawButton();
 				
 				nodeContainerSprite.addChild(this.nodes[i]);
+				
 			}
 		}
 		
 		public function closeNodes(node:TreeNode):void
 		{
-			trace("close");
+			
 			for (var i:int = 0; i < this.nodes.length; i++)
 			{
+				//trace("nodes[i]: " + nodes[i].name);
+				//trace("nodes[i]: " + treeViewComponent.isLeaf(nodes[i]));
+				
 				if (this.nodes[i].isExpanded)
 				{
 					if (!this.nodes[i].containsNode(node))
 					{
+						if (((node.nodes.length != 0 && !this.nodes[i].depth == node.depth) || this.nodes[i].depth == node.depth) && treeViewComponent.autoCollapseWhenNotViewed)
+							
+						{
+							if (!treeViewComponent.isLeaf(nodes[i]))
+							{
+								this.nodes[i].button.toggleLabel(this.nodes[i].nodes.length == 0 ? false : true);
+								this.nodes[i].removeNodes();
+								this.treeViewComponent.adjustHeight(this.nodes[i]);
+							}
+						}
 						
-						this.nodes[i].button.toggleLabel(this.nodes[i].nodes.length == 0 ? false : true);
-						
-						this.nodes[i].removeNodes();
-						this.treeViewComponent.adjustHeight(this.nodes[i]);
 					}
 					else
 					{

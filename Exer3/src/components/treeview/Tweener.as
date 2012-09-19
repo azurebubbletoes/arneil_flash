@@ -9,39 +9,39 @@ package components.treeview
 	 */
 	public class Tweener extends Sprite
 	{
-		private var myObj:Object; //object
+		private var _myObj:Object; //object
 		//var myDestX;  //destinationX
-		private var myDestY:Number; //destinationY
-		private var mySpeed:Number; //easing Speed
-		private var myAlphaAmt:Number; //the amount to add or subtract alpha
+		private var _myDestY:Number; //destinationY
+		private var _mySpeed:Number; //easing Speed
+		private var _myAlphaAmt:Number; //the amount to add or subtract alpha
 		
-		function Tweener()
+		public function Tweener()
 		{
-			myObj = null;
+			_myObj = null;
 			//myDestX = 0;
-			myDestY = 0;
-			mySpeed = 1;
-			myAlphaAmt = .01;
+			_myDestY = 0;
+			_mySpeed = 1;
+			_myAlphaAmt = .01;
 		}
 		
 		//***************************************************
 		public function moveTween(object:Object, destinationY:Number, easingSpeed:Number):void
 		{
-			myObj = object;
+			_myObj = object;
 			//myDestX = destinationX;
-			myDestY = destinationY;
-			mySpeed = easingSpeed;
+			_myDestY = destinationY;
+			_mySpeed = easingSpeed;
 			this.addEventListener(Event.ENTER_FRAME, moveTweener);
 		}
 		
 		public function moveTweener(event:Event):void
 		{
-			if (myObj.y == myDestY)
+			if (_myObj.y == _myDestY)
 			{
 				this.removeEventListener(Event.ENTER_FRAME, moveTweener);
 			}
 			//myObj.x += (myDestX-myObj.x)/mySpeed;
-			myObj.y += (myDestY - myObj.y) / mySpeed;
+			_myObj.y += (_myDestY - _myObj.y) / _mySpeed;
 		
 		}
 		//***************************************************
