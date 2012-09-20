@@ -40,30 +40,29 @@ package
 			
 			
 			   var tree:TreeViewComponent = new TreeViewComponent();
+				
+			  // tree.autoCollapseWhenNotViewed = !true;
+			  // tree.autoCollapseWhenNotViewed = true;
+			   
+			   tree.nodes.push(new TreeNode(tree, "one1", "one")); //depth 0
 			
-			   tree.nodes.push(new TreeNode(tree, "one", "one")); //depth 0
 			
+			   tree.nodes[0].nodes.push(new TreeNode(tree, "one2", "one-one")); //depth 1
+			  // tree.nodes[0].nodes.push(new TreeNode(tree, "one3", "one-two")); //depth 1
+			   tree.nodes[0].nodes[0].nodes.push(new TreeNode(tree, "one", "one-two-one")); //depth 2
+			   
 			
-			   tree.nodes[0].nodes.push(new TreeNode(tree, "one", "one-one")); //depth 1
-			   tree.nodes[0].nodes[0].nodes.push(new TreeNode(tree, "one", "one-one-one")); //depth 2
-			   tree.nodes[0].nodes[0].nodes.push(new TreeNode(tree, "one", "one-one-two")); //depth 2
+			  // tree.nodes[0].nodes.push(new TreeNode(tree, "one4", "one-three"));
+			   //tree.nodes[0].nodes[2].nodes.push(new TreeNode(tree, "one", "one-three"));
 			
-			   tree.nodes[0].nodes[0].nodes[0].nodes.push(new TreeNode(tree, "one", "one-one-one-one")); //depth 2
-			   tree.nodes[0].nodes[0].nodes[1].nodes.push(new TreeNode(tree, "one", "one-one-one-two")); //depth 2
-			
-			   tree.nodes[0].nodes.push(new TreeNode(tree, "one", "one-two")); //depth 1
-			   tree.nodes[0].nodes[1].nodes.push(new TreeNode(tree, "one", "one-two-one")); //depth 2
-			   tree.nodes[0].nodes[1].nodes.push(new TreeNode(tree, "one", "one-two-two")); //depth 2
-			
-			   tree.nodes[0].nodes.push(new TreeNode(tree, "one", "one-three"));
-			   tree.nodes[0].nodes[2].nodes.push(new TreeNode(tree, "one", "one-three"));
-			
-			   tree.nodes.push(new TreeNode(tree, "one", "two")); //depth 1
+			   tree.nodes.push(new TreeNode(tree, "one5", "two")); //depth 1
 			   tree.nodes[1].nodes.push(new TreeNode(tree, "one", "two-one")); //depth 2
 			   tree.nodes[1].nodes.push(new TreeNode(tree, "one", "two-two")); //depth 2
 			
-			   tree.nodes.push(new TreeNode(tree, "one", "three")); //depth 0
-			
+			   tree.nodes.push(new TreeNode(tree, "one6", "three")); //depth 0
+			 //  tree.nodes.push(new TreeNode(tree, "one7", "four")); //depth 0
+//				tree.nodes[2].nodes.push(new TreeNode(tree, "one8", "three-one")); //depth 2
+//			   tree.nodes[2].nodes.push(new TreeNode(tree, "one9", "three-two")); //depth 2*/
 			   tree.endUpdate();
 			   addChild(tree);
 			 

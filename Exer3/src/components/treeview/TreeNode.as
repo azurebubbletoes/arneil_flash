@@ -7,6 +7,7 @@ package components.treeview
 	import flash.events.Event;
 	
 	import com.gskinner.motion.GTween;
+	
 	/**
 	 * ...
 	 * @author arneil mercado
@@ -20,7 +21,7 @@ package components.treeview
 		private var _name:String;
 		private var _button:Button;
 		private var _treeViewComponent:TreeViewComponent;
-	
+		
 		private var _isExpanded:Boolean;
 		
 		public function TreeNode(ref:TreeViewComponent, id:String, name:String)
@@ -83,8 +84,6 @@ package components.treeview
 		{
 			_depth = value;
 		}
-		
-	
 		
 		public function get isExpanded():Boolean
 		{
@@ -172,27 +171,39 @@ package components.treeview
 			
 			event.stopPropagation();
 			
+			var openLeaves:Number = this.treeViewComponent.numberOfOpenLeaves(this.treeViewComponent.nodes);
+			var leavesEnabled:Boolean = this.treeViewComponent.leafNodeAlwaysOpen;
+			var openedLeaf:TreeNode = treeViewComponent.onlyOpenedLeaf(treeViewComponent.nodes);
+			//var leafNode:Boolean = !treeViewComponent.isLeafOpened && (((openLeaves > 1 || leavesEnabled) || (openLeaves == 1 && leavesEnabled && !this.containsNode(openedLeaf)) ) || !leavesEnabled);
+			
+			
+			//var leafNode:Boolean = treeViewComponent.isLeafOpened || this.containsNode(openedLeaf) && openLeaves>=0
+		//	trace("-----------------------------------------------------------------------------------------")
+		//	trace("leafNode" + leafNode)
+			
 			if (this.hasNodes)
 			{
 				if (this.isExpanded)
 				{
-					this.button.toggleLabel(true);
-					this.removeNodes();
-					
+					//if(leafNode){
+						this.button.toggleLabel(true);
+						this.removeNodes();
+					//}
 				}
 				else
 				{
+					
 					this.button.toggleLabel(false);
-					this.nodeContainerSprite.y;// += 30;
-					//new Tweener().moveTween(nodeContainerSprite, this.nodeContainerSprite.y - 30, 5);
-					var myTween:GTween = new GTween(this.nodeContainerSprite,.4, {y:0}, {swapValues: true});
+					this.nodeContainerSprite.y; // += 30;
+					var myTween:GTween = new GTween(this.nodeContainerSprite, this.treeViewComponent.tweenSpeed, {y: 0}, {swapValues: true});
 					this.createNodes();
 				}
+				
+				//if(leafNode){
+					treeViewComponent.closeNodes(this, this.treeViewComponent.nodes);
+					this.treeViewComponent.adjustHeight(this, this.treeViewComponent.nodes);
+				//}
 			}
-			
-			this.treeViewComponent.closeNodes(this);
-			this.treeViewComponent.adjustHeight(this);
-		
 		}
 		
 		public function createSubNodes():void
@@ -202,6 +213,7 @@ package components.treeview
 			
 			for (var i:int = 0; i < this.nodes.length; i++, y += 30)
 			{
+				//trace(this.nodes[i].name)
 				this.nodes[i].y = y;
 				this.nodes[i].x = x;
 				
@@ -212,72 +224,10 @@ package components.treeview
 			}
 		}
 		
-		public function closeNodes(node:TreeNode):void
-		{
-			
-			for (var i:int = 0; i < this.nodes.length; i++)
-			{
-				//trace("nodes[i]: " + nodes[i].name);
-				//trace("nodes[i]: " + treeViewComponent.isLeaf(nodes[i]));
-				
-				if (this.nodes[i].isExpanded)
-				{
-					if (!this.nodes[i].containsNode(node))
-					{
-						if (((node.nodes.length != 0 && !this.nodes[i].depth == node.depth) || this.nodes[i].depth == node.depth) && treeViewComponent.autoCollapseWhenNotViewed)
-							
-						{
-							if (!treeViewComponent.isLeaf(nodes[i]))
-							{
-								this.nodes[i].button.toggleLabel(this.nodes[i].nodes.length == 0 ? false : true);
-								this.nodes[i].removeNodes();
-								this.treeViewComponent.adjustHeight(this.nodes[i]);
-							}
-						}
-						
-					}
-					else
-					{
-						if (!this.nodes[i].equals(node))
-							this.nodes[i].closeNodes(node);
-					}
-					
-				}
-				
-			}
-		
-		}
-		
-		internal function adjustHeight(node:TreeNode):void
-		{
-			
-			var hasPassed:Boolean = false
-			for (var i:int = 0; i < this.nodes.length; i++)
-			{
-				if (hasPassed && !this.nodes[i].equals(node) && !this.nodes[i].containsNode(node))
-				{
-					
-					var height:Number = node.isExpanded ? node.nodeContainerSprite.height : node.nodeContainerSprite.height * -1;
-					this.nodes[i].y += height;
-					
-				}
-				if (this.nodes[i].containsNode(node))
-				{
-					
-					hasPassed = true;
-					
-					if (!this.nodes[i].equals(node))
-						this.nodes[i].adjustHeight(node);
-					
-				}
-				
-			}
-		
-		}
-		
 		public function equals(t:TreeNode):Boolean
 		{
-			return this.id == t.id && this.name == t.name && this.nodes == t.nodes && this.treeViewComponent == t.treeViewComponent;
+			//return this.id == t.id && this.name == t.name && this.nodes == t.nodes && this.treeViewComponent == t.treeViewComponent;
+			return t?(this.id == t.id && this.name == t.name):false; // && this.nodes == t.nodes && this.treeViewComponent == t.treeViewComponent;
 		}
 		
 		public function containsNode(t:TreeNode):Boolean

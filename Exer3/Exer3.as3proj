@@ -50,7 +50,9 @@
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>
-    <!-- example: <element path="..." /> -->
+    <element path="lib\CasaLib.swc" />
+    <element path="lib\GTween_V2_01.swc" />
+    <element path="lib\PODD.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
