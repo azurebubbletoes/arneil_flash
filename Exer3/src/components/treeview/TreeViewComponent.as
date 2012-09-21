@@ -39,12 +39,12 @@ package components.treeview
 		
 		private function initialize():void
 		{
-			//-------------------
+			//------------------
 			_autoCollapseWhenNotViewed = false;
-			_leafNodeAlwaysOpen = !false;
-			_leafToOpen = 0; //default opened leaf if  leafNodeAlwaysOpen
+			_leafNodeAlwaysOpen = false;
+			_leafToOpen = 0; //default opened leaf if  leafNodeAlwasOpen
 			_isLeafOpened = false;
-			
+		
 			_startX = 50;
 			_startY = 50;
 			_horizontalIndent = 10;
@@ -78,13 +78,15 @@ package components.treeview
 			}
 			if (this.leafNodeAlwaysOpen)
 				openLeaf();
-			//isLeafOpened = true;
+			isLeafOpened = true;
 			//trace(numberOfOpenLeaves(this.nodes));
 			//trace(onlyOpenedLeaf(this.nodes));
+		
 		}
 		
 		internal function closeNodes(node:TreeNode, nodelist:Vector.<TreeNode>):void
 		{
+			
 			var i:int = 0;
 			var nodes:Vector.<TreeNode> = nodelist;
 			
@@ -105,7 +107,9 @@ package components.treeview
 								currentNode.button.toggleLabel(currentNode.nodes.length == 0 ? false : true);
 								currentNode.removeNodes();
 								adjustHeight(currentNode, this.nodes);
+								
 							}
+							
 						}
 					}
 					else
@@ -193,29 +197,72 @@ package components.treeview
 			{
 				
 				var currentNode:TreeNode = nodes[i];
+				//trace("=============================================");
+				//trace("cur leaf: " + currentNode.name);
+				//trace("isExpanded: " + currentNode.isExpanded);
+				//trace("");
 				
-				if (currentNode.hasNodes)
+				if (currentNode.isExpanded)
 				{
-					if (currentNode.isExpanded)
-						ctr += numberOfOpenLeaves(currentNode.nodes);
+					//if (currentNode.hasNodes)
+					ctr += numberOfOpenLeaves(currentNode.nodes);
+					
 				}
 				else
 				{
-					
-					if (currentNode.depth != 0) //excluding the root node.
-						ctr++;
+					if (!currentNode.hasNodes && currentNode.depth != 0)
+					{
+						
+						ctr += 1;
+						
+					}
 				}
+				//trace("");
+				
 				i++;
 			}
 			return ctr;
 		}
 		
-		internal function onlyOpenedLeaf(nodelist:Vector.<TreeNode>):TreeNode
+		internal function containsAllOpenedLeaves(node:TreeNode, nodelist:Vector.<TreeNode>):Boolean
 		{
-			var node:TreeNode;
+			
 			var i:int = 0;
 			var nodes:Vector.<TreeNode> = nodelist;
+			var openedLeaves:Vector.<TreeNode> = new Vector.<TreeNode>();
+			var contain:Boolean = true;
 			
+			while (i < nodes.length)
+			{
+				var currentNode:TreeNode = nodes[i];
+				
+				if (currentNode.isExpanded)
+				{
+					contain = contain && containsAllOpenedLeaves(node,currentNode.nodes);
+				}
+				else
+				{
+					if (!currentNode.hasNodes && currentNode.depth != 0)
+					{
+						
+						contain = contain && (node.contains(currentNode) ? true : false);
+						
+					}
+				}
+				
+				i++;
+			}
+			return contain;
+		
+		}
+		
+		internal function onlyOpenedLeaf(nodelist:Vector.<TreeNode>):TreeNode
+		{
+			
+			var i:int = 0;
+			var nodes:Vector.<TreeNode> = nodelist;
+			//var openedLeaves:Vector.<TreeNode> = new Vector.<TreeNode>();
+			var node:TreeNode;
 			while (i < nodes.length)
 			{
 				
@@ -225,15 +272,17 @@ package components.treeview
 				{
 					if (currentNode.isExpanded)
 						node = onlyOpenedLeaf(currentNode.nodes);
+					
 				}
 				else
 				{
 					
 					if (currentNode.depth != 0)
 					{
-						trace("wawa")
-						trace(currentNode.name)
+						//trace("wawa")
+						//trace(currentNode.name)
 						node = currentNode;
+						
 						break;
 					}
 				}
@@ -255,6 +304,9 @@ package components.treeview
 			}
 		
 		}
+		
+		//internal function
+		
 		
 		public function beginUpdate():void
 		{
@@ -362,12 +414,12 @@ package components.treeview
 			_tweenSpeed = value;
 		}
 		
-		public function get isLeafOpened():Boolean 
+		public function get isLeafOpened():Boolean
 		{
 			return _isLeafOpened;
 		}
 		
-		public function set isLeafOpened(value:Boolean):void 
+		public function set isLeafOpened(value:Boolean):void
 		{
 			_isLeafOpened = value;
 		}

@@ -170,39 +170,72 @@ package components.treeview
 		{
 			
 			event.stopPropagation();
+			var tree:TreeViewComponent = this.treeViewComponent;
+			var isOpened:Boolean = tree.isLeafOpened;
+			var leafNodesOpen:Boolean = tree.leafNodeAlwaysOpen;
 			
-			var openLeaves:Number = this.treeViewComponent.numberOfOpenLeaves(this.treeViewComponent.nodes);
-			var leavesEnabled:Boolean = this.treeViewComponent.leafNodeAlwaysOpen;
-			var openedLeaf:TreeNode = treeViewComponent.onlyOpenedLeaf(treeViewComponent.nodes);
-			//var leafNode:Boolean = !treeViewComponent.isLeafOpened && (((openLeaves > 1 || leavesEnabled) || (openLeaves == 1 && leavesEnabled && !this.containsNode(openedLeaf)) ) || !leavesEnabled);
+			var containsMultipleLeaves:Boolean = tree.containsAllOpenedLeaves(this, tree.nodes) && tree.numberOfOpenLeaves(tree.nodes) > 1;
+			var isNullOpenLeaf:Boolean = tree.onlyOpenedLeaf(this.nodes) ? false : true;
+			var containsOneLeaf:Boolean = (!isNullOpenLeaf ? this.containsNode(tree.onlyOpenedLeaf(this.nodes)) : false) && tree.numberOfOpenLeaves(tree.nodes) == 1
 			
-			
-			//var leafNode:Boolean = treeViewComponent.isLeafOpened || this.containsNode(openedLeaf) && openLeaves>=0
-		//	trace("-----------------------------------------------------------------------------------------")
-		//	trace("leafNode" + leafNode)
+			var closeLeaf:Boolean = !((containsMultipleLeaves || containsOneLeaf) && leafNodesOpen && isOpened); //  ((!containsMultipleLeaves || !containsOneLeaf) && !leafNodesOpen && !isOpened);
 			
 			if (this.hasNodes)
 			{
 				if (this.isExpanded)
 				{
-					//if(leafNode){
+					
+					if (closeLeaf)
+					{
 						this.button.toggleLabel(true);
 						this.removeNodes();
-					//}
+					}
+					
 				}
 				else
 				{
 					
 					this.button.toggleLabel(false);
-					this.nodeContainerSprite.y; // += 30;
+					this.nodeContainerSprite.y;
 					var myTween:GTween = new GTween(this.nodeContainerSprite, this.treeViewComponent.tweenSpeed, {y: 0}, {swapValues: true});
 					this.createNodes();
+					
+					if (leafNodesOpen && isOpened && tree.numberOfOpenLeaves(this.nodes) == 0 && tree.autoCollapseWhenNotViewed)
+					{
+						openNode();
+						
+					}
 				}
 				
-				//if(leafNode){
+				
+				
+				containsMultipleLeaves = tree.containsAllOpenedLeaves(this, tree.nodes) && tree.numberOfOpenLeaves(tree.nodes) > 1;
+				isNullOpenLeaf = tree.onlyOpenedLeaf(this.nodes) ? false : true;
+				containsOneLeaf = (!isNullOpenLeaf ? this.containsNode(tree.onlyOpenedLeaf(this.nodes)) : false) && tree.numberOfOpenLeaves(tree.nodes) == 1
+				
+				
+				closeLeaf = !((containsMultipleLeaves || containsOneLeaf) && leafNodesOpen && isOpened);
+				
+				if (closeLeaf || !this.isExpanded)
+				{
+					trace("close")
 					treeViewComponent.closeNodes(this, this.treeViewComponent.nodes);
 					this.treeViewComponent.adjustHeight(this, this.treeViewComponent.nodes);
-				//}
+				}
+				
+			}
+		
+		}
+		
+		public function openNode():void
+		{
+			var index:int = 0;
+			var nodes:Vector.<TreeNode> = this.nodes;
+			while (nodes[index].hasNodes)
+			{
+				var e:Event = new Event(MouseEvent.CLICK, false, true);
+				nodes[index].dispatchEvent(e);
+				nodes = nodes[index].nodes;
 			}
 		}
 		
@@ -227,7 +260,7 @@ package components.treeview
 		public function equals(t:TreeNode):Boolean
 		{
 			//return this.id == t.id && this.name == t.name && this.nodes == t.nodes && this.treeViewComponent == t.treeViewComponent;
-			return t?(this.id == t.id && this.name == t.name):false; // && this.nodes == t.nodes && this.treeViewComponent == t.treeViewComponent;
+			return t ? (this.id == t.id && this.name == t.name) : false; // && this.nodes == t.nodes && this.treeViewComponent == t.treeViewComponent;
 		}
 		
 		public function containsNode(t:TreeNode):Boolean
@@ -254,7 +287,7 @@ package components.treeview
 			this.depth = depth;
 			for (var i:int = 0; i < this.nodes.length; i++)
 			{
-				this.nodes[i].depth = depth;
+				this.nodes[i].depth = depth + 1;
 				this.nodes[i].isExpanded = !(false || this.nodes[i].nodes.length == 0);
 				if (this.nodes[i].hasNodes)
 					this.nodes[i].initializeDepth(depth + 1);
