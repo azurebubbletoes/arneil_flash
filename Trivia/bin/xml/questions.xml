@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data>
+
+	<category name="Astrology">
+		<question name="The astrological signs Cancer, Pisces and Scorpio are associated with what element?"
+				  answer="Water">
+			<choices>Air</choices>
+			<choices>Water</choices>
+			<choices>Fire</choices>
+			<choices>Earth</choices>
+		</question>
+		<question name="What is a person's astrological sign if he/she was born between August 23 and September 22?"
+				  answer="Virgo">
+			<choices>Aries</choices>
+			<choices>Capricorn</choices>
+			<choices>Virgo</choices>
+			<choices>Libra</choices>
+		</question>
+
+		<question name="The archer is the symbol of which of these signs?"
+				  answer="Sagittarius">
+			<choices>Scorpio</choices>
+			<choices>Capricorn</choices>
+			<choices>Cancer</choices>
+			<choices>Sagittarius</choices>
+		</question>
+
+	</category>
+	<category name="Math">
+		<question name="What do we call this sequence of numbers: 1, 1, 2, 3, 5, 8, 13, 21, 34, 55 ...?"
+				  answer="Fibonacci">
+			<choices>Gauss</choices>
+			<choices>Euler</choices>
+			<choices>Lucas</choices>
+			<choices>Fibonacci</choices>
+		</question>
+
+	</category>
+	<category name="Composers">
+		<question name="Who wrote the song 'Vesuvius' in 1999?"
+				  answer="Frank Ticheli">
+			<choices>Aaron Copland</choices>
+			<choices>Robert Smith</choices>
+			<choices>Frank Ticheli</choices>
+			<choices>David Gillingham</choices>
+		</question>
+		<question name="Who wrote the song 'Festive Overture'?"
+				  answer="Dmitri Shostakovitch">
+			<choices>Ludwig Van Beethoven</choices>
+			<choices>Nikolai Andreevich Rimsky-Korsakov</choices>
+			<choices>Dmitri Shostakovitch</choices>
+			<choices>Wolfgang Amadeus Mozart</choices>
+		</question>
+
+		<question name="When was the Flute Concerto # 1 in Allegro Maestoso written? "
+				  answer="1778">
+			<choices>1778</choices>
+			<choices>1779</choices>
+			<choices>1780</choices>
+			<choices>1781</choices>
+		</question>
+
+		<question name="Which Composer wrote 'Procession of the Nobles'?"
+				  answer="Nikolai Andreevich Rimsky-Korsakov">
+			<choices>David Gilingham</choices>
+			<choices>Beethoven</choices>
+			<choices>Nikolai Andreevich Rimsky-Korsakov</choices>
+			<choices>Mozart</choices>
+		</question>
+
+	</category>
+	<category name="Norse Mythology">
+		<question name="Whose name means 'all wise'?"
+				  answer="Alviss">
+			<choices>Alfrodull</choices>
+			<choices>Alviss</choices>
+			<choices>Asgard</choices>
+			<choices>Atla</choices>
+		</question>
+		<question name="What is the name of the bridge separating Midgard (the realm of man) and Asgard (the realm of Gods)?"
+				  answer="Bragi">
+			<choices>Bifrost</choices>
+			<choices>Bragi</choices>
+			<choices>Brunhilde</choices>
+			<choices>Beldegg</choices>
+		</question>
+		<question name="Who was a daughter of Loki?"
+				  answer="Eisa">
+			<choices>Eir</choices>
+			<choices>Eisa</choices>
+			<choices>Elli</choices>
+			<choices>Edda</choices>
+		</question>
+		<question name="'A gigantic and terrible beast in the shape of a wolf'. Who is being described?"
+				  answer="Fenrir">
+			<choices>Frigg</choices>
+			<choices>Forseti</choices>
+			<choices>Freyr</choices>
+			<choices>Fenrir</choices>
+		</question>
+		<question name="Who did Erna have eleven sons with?"
+				  answer="Jarl">
+			<choices>Jord</choices>
+			<choices>Jarl</choices>
+			<choices>Jormungand</choices>
+			<choices>Jotun</choices>
+		</question>
+		<question name="Who was responsible for the death of Balder?"
+				  answer="Loki">
+			<choices>Loki</choices>
+			<choices>Laga</choices>
+			<choices>Lofn</choices>
+			<choices>Landvaettir</choices>
+		</question>
+		<question name="What name was given to 'the land of fire far to the south'?"
+				  answer="Muspell">
+			<choices>Mundilfari</choices>
+			<choices>Miming</choices>
+			<choices>Muspell</choices>
+			<choices>Mimir</choices>
+		</question>
+		<question name="What was the name of the monstrous serpent who was also known as 'the tearer of corpses'?"
+				  answer="Nidhogg">
+			<choices>Nott</choices>
+			<choices>Njord</choices>
+			<choices>Nidhogg</choices>
+			<choices>Norns</choices>
+		</question>
+		<question name="Which goddess was known as 'the snow shoe goddess'?"
+				  answer="Skadi">
+			<choices>Svalin</choices>
+			<choices>Skadi</choices>
+			<choices>Sigurd</choices>
+			<choices>Sigmund</choices>
+		</question>
+		<question name="Which name means 'home of the vanir'?"
+				  answer="Vanaheim">
+			<choices>Vanaheim</choices>
+			<choices>Var</choices>
+			<choices>Vanir</choices>
+			<choices>Valhalla</choices>
+		</question>
+
+
+	</category>
+
+	<category name="Data Communications">
+
+		<question name="Transmission media lie below the _______ layer."
+				  answer="physical">
+			<choices>physical</choices>
+			<choices>network</choices>
+			<choices>transport</choices>
+			<choices>application</choices>
+
+		</question>
+
+		<question name="_______ cable consists of an inner copper core and a second conducting outer sheath."
+				  answer="Shielded twisted-pair">
+			<choices>Twisted-pair</choices>
+			<choices>Coaxial</choices>
+			<choices>Fiber-optic</choices>
+			<choices>Shielded twisted-pair</choices>
+		</question>
+
+		<question name="In fiber optics, the signal is _______ waves."
+				  answer="radio">
+			<choices>light</choices>
+			<choices>radio</choices>
+			<choices>infrared</choices>
+			<choices>very-low frequency</choices>
+
+		</question>
+
+	</category>
+
+</data>
